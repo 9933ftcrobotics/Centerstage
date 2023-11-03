@@ -73,6 +73,8 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         ClimberRight = hardwareMap.get(DcMotor.class, "ClimberRight");
         ArmInOut = hardwareMap.get(DcMotor.class, "ArmInOut");
         ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+        DroneLauncher = hardwareMap.get(Servo.class, "DroneLauncher");
+
 
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
@@ -313,15 +315,21 @@ else
                 else
                 {
 
-                    telemetry.addLine("Neutral");
                     ArmInOut.setTargetPosition(0);
-                    if( ArmInOut.getTargetPosition() < 100)
+                    if( ArmInOut.getCurrentPosition() < 100)
                     {
-
                         ArmUpDown.setTargetPosition(100);
                     }
                 }
 
+                if(gamepad1.back | gamepad2.back)
+                {
+                    DroneLauncher.setPosition(0.5);
+                }
+                else
+                {
+                    DroneLauncher.setPosition(0);
+                }
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
                 telemetry.addData("Arm In Out Current",ArmInOut.getCurrentPosition());
