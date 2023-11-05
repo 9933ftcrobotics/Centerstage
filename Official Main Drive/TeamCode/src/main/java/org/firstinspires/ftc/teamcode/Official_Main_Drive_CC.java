@@ -30,10 +30,13 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     private DcMotor RearRight;
     private DcMotor RearLeft;
     private DcMotor ClimberRight;
+    private DcMotor ClimberLeft;
     private DcMotor ArmInOut;
     private DcMotor ArmUpDown;
 
 
+    private Servo LeftClaw;
+    private Servo RightClaw;
     private Servo DroneLauncher;
   /*private DcMotor RightMotor;
   private DcMotor LeftMotor;*/
@@ -70,12 +73,20 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         RearRight=hardwareMap.dcMotor.get("rightRear");
         RearLeft=hardwareMap.dcMotor.get("leftRear");
 
+        ClimberLeft = hardwareMap.get(DcMotor.class, "ClimberLeft");
         ClimberRight = hardwareMap.get(DcMotor.class, "ClimberRight");
         ArmInOut = hardwareMap.get(DcMotor.class, "ArmInOut");
         ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+        LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
+        RightClaw = hardwareMap.get(Servo.class, "RightClaw");
         DroneLauncher = hardwareMap.get(Servo.class, "DroneLauncher");
 
 
+        ClimberLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ClimberLeft.setTargetPosition(0);
+        ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        ClimberRight.setDirection(DcMotor.Direction.REVERSE);
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
         ClimberRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -92,12 +103,15 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         RearLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        RightClaw.setDirection(Servo.Direction.REVERSE);
+
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmUpDown.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmInOut.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ClimberLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ClimberRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
@@ -133,6 +147,8 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
             ArmUpDown.setPower(0.5);
             ArmInOut.setPower(1);
+            ClimberLeft.setPower(1);
+            ClimberRight.setPower(1);
             while (opModeIsActive()) {
 
                 if(gamepad1.right_stick_button)
@@ -310,7 +326,7 @@ else
 
                     ArmInOut.setTargetPosition(0);
 
-                    ArmUpDown.setTargetPosition(50);
+                    ArmUpDown.setTargetPosition(0);
                 }
                 else
                 {
@@ -329,6 +345,41 @@ else
                 else
                 {
                     DroneLauncher.setPosition(0);
+                }
+
+                if(gamepad1.right_bumper)
+                {
+                    RightClaw.setPosition(0.21);
+                }
+                else
+                {
+                    RightClaw.setPosition(0);
+                }
+
+                if(gamepad1.left_bumper)
+                {
+                    LeftClaw.setPosition(0.21);
+                }
+                else
+                {
+                    LeftClaw.setPosition(0);
+                }
+
+                if(gamepad1.right_stick_button | gamepad2.right_stick_button)
+                {
+                    ClimberLeft.setTargetPosition(500);
+                    ClimberRight.setTargetPosition(500);
+                }
+                else
+                {
+                    ClimberLeft.setTargetPosition(0);
+                    ClimberRight.setTargetPosition(0);
+                }
+
+                if(gamepad1.left_stick_button | gamepad2.left_stick_button)
+                {
+                    ClimberLeft.setTargetPosition(-100);
+                    ClimberRight.setTargetPosition(-100);
                 }
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
