@@ -334,7 +334,7 @@ else
                 else
                 {
 
-                    LTrigger = 1;
+                    LTrigger = 0.7;
                     ArmInOut.setTargetPosition(0);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
