@@ -103,6 +103,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         RearLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.REVERSE);
         DroneLauncher.setDirection(Servo.Direction.REVERSE);
 
@@ -335,7 +336,7 @@ else
                 else
                 {
 
-                    LTrigger = 1;
+                    LTrigger = 0.7;
                     ArmInOut.setTargetPosition(0);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
