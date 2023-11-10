@@ -23,9 +23,9 @@ import java.util.List;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "Blue Right", group = "")
+@Autonomous(name = "Red Right", group = "")
 //@Disabled
-public class SampleAuto extends LinearOpMode {
+public class RedRight extends LinearOpMode {
 
     BNO055IMU imu;
 
@@ -134,7 +134,7 @@ public class SampleAuto extends LinearOpMode {
                 Turn(0,0,0.3);
 
 
-                if(Marker==0)
+                /*if(Marker==0)
                 {
                     //Left
                     Drive(-2500,0.5);
@@ -149,22 +149,22 @@ public class SampleAuto extends LinearOpMode {
                 else if(Marker==2)
                 {
                     //Right
-                        Turn(0,20,0.5);
-                        Drive(-1250,0.5);
-                        RightClaw.setPosition(1);
-                        sleep(2000);
-                        Drive(1250,0.5);
-                        Turn(20,0,0.5);
+                    Turn(0,20,0.5);
+                    Drive(-1250,0.5);
+                    RightClaw.setPosition(1);
+                    sleep(2000);
+                    Drive(1250,0.5);
+                    Turn(20,0,0.5);
 
                 }
                 else
                 {
                     //Center
-                        Drive(-4000,0.5);
-                        RightClaw.setPosition(1);
-                        sleep(2000);
-                        Drive(4000,0.5);
-                }
+                    Drive(-4000,0.5);
+                    RightClaw.setPosition(1);
+                    sleep(2000);
+                    Drive(4000,0.5);
+                }/*
 
                 /*Drive(1700,0.5);
                 Turn(-55,-90,0.5);

@@ -23,9 +23,9 @@ import java.util.List;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "Blue Right", group = "")
+@Autonomous(name = "Blue Left", group = "")
 //@Disabled
-public class SampleAuto extends LinearOpMode {
+public class BlueLeft extends LinearOpMode {
 
     BNO055IMU imu;
 
@@ -117,24 +117,26 @@ public class SampleAuto extends LinearOpMode {
                 }
                 sleep(1000);
 
-                /*RightClaw.setPosition(0.2); //middle spike
+                //RightClaw.setPosition(0.2); //middle spike
                 sleep(2000);
-                Drive(-4500,0.5);*/
+                Drive(-8500,0.5);
 
                 /*sleep(2000); //right spike
-                Drive(-3800,0.5);
-                Turn(20,0,0.5);
-                Drive(-500,0.5);
-                 */
-                sleep(2000);
+                Drive(-4300,0.5);
+                Turn(-45,0,0.5);
+                Drive(-100,0.5);
+                Drive(100,0.5);
+                Turn(0,0,0.5);*/
+
+               /* sleep(2000);
                 Drive(-8600,0.5);
                 Turn(-90,0,0.3);
                 Drive(-100,0.5);
                 Drive(200,0.5);
-                Turn(0,0,0.3);
+                Turn(0,0,0.3);*/
 
 
-                if(Marker==0)
+               /* if(Marker==0)
                 {
                     //Left
                     Drive(-2500,0.5);
@@ -149,23 +151,23 @@ public class SampleAuto extends LinearOpMode {
                 else if(Marker==2)
                 {
                     //Right
-                        Turn(0,20,0.5);
-                        Drive(-1250,0.5);
-                        RightClaw.setPosition(1);
-                        sleep(2000);
-                        Drive(1250,0.5);
-                        Turn(20,0,0.5);
+                    Turn(0,20,0.5);
+                    Drive(-1250,0.5);
+                    RightClaw.setPosition(1);
+                    sleep(2000);
+                    Drive(1250,0.5);
+                    Turn(20,0,0.5);
 
                 }
                 else
                 {
                     //Center
-                        Drive(-4000,0.5);
-                        RightClaw.setPosition(1);
-                        sleep(2000);
-                        Drive(4000,0.5);
+                    Drive(-4000,0.5);
+                    RightClaw.setPosition(1);
+                    sleep(2000);
+                    Drive(4000,0.5);
                 }
-
+*/
                 /*Drive(1700,0.5);
                 Turn(-55,-90,0.5);
                 Drive(-30000,0.7);*/
