@@ -23,9 +23,9 @@ import java.util.List;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "RedRight", group = "")
+@Autonomous(name = "SensorTest", group = "")
 //@Disabled
-public class RedRight extends LinearOpMode {
+public class SensorTest extends LinearOpMode {
 
     BNO055IMU imu;
 
@@ -38,7 +38,6 @@ public class RedRight extends LinearOpMode {
     private DcMotor RearRight;
     private DcMotor RearLeft;
     private Servo LeftClaw;
-    private DcMotor ArmUpDown;
     private DistanceSensor LeftDistance;
     private DistanceSensor RightDistance;
     double Next = 0;
@@ -57,7 +56,6 @@ public class RedRight extends LinearOpMode {
         RearRight=hardwareMap.dcMotor.get("rightRear");
         RearLeft=hardwareMap.dcMotor.get("leftRear");
         LeftClaw=hardwareMap.servo.get("LeftClaw");
-        ArmUpDown=hardwareMap.dcMotor.get("ArmUpDown");
         LeftDistance = hardwareMap.get(DistanceSensor.class, "LeftDistance");
         RightDistance = hardwareMap.get(DistanceSensor.class, "RightDistance");
 
@@ -91,14 +89,7 @@ public class RedRight extends LinearOpMode {
             RearRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             RearLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            ArmUpDown.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ArmUpDown.setTargetPosition(0);
-            ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
             if (opModeIsActive()) {
-                ArmUpDown.setPower(0.5);
-                ArmUpDown.setTargetPosition(50);
                 angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
 
@@ -115,9 +106,6 @@ public class RedRight extends LinearOpMode {
                 telemetry.addData("Left", LeftDistance.getDistance(DistanceUnit.CM));
                 telemetry.addData("Right", RightDistance.getDistance(DistanceUnit.CM));
                 telemetry.update();
-
-
-
                 int Marker = 1;
                 if(LeftDistance.getDistance(DistanceUnit.CM) < 100)
                 {
@@ -158,15 +146,8 @@ public class RedRight extends LinearOpMode {
                     Drive(1700,0.5);
                     Turn(-30,0,0.5);
                     Drive(2500,0.5);*/
-                    LeftClaw.setPosition(0.3);
-                    sleep(500);
-                    Drive(-8600,0.5);
-                    Turn(90,0,0.3);
-                    Drive(-200,0.5);
-                    sleep(500);
-                    LeftClaw.setPosition(0);
-                    Drive(200,0.5);
-                    Turn(-90,0,0.3);
+                    telemetry.addLine("Left Spike Mark");
+
                 }
                 else if(Marker==2)
                 {
@@ -177,14 +158,7 @@ public class RedRight extends LinearOpMode {
                     sleep(2000);
                     Drive(1250,0.5);
                     Turn(20,0,0.5);*/
-                    LeftClaw.setPosition(0.3);
-                    sleep(500); //right spike
-                    Drive(-3800,0.5);
-                    Turn(-20,0,0.5);
-                    Drive(-1000,0.5);
-                    LeftClaw.setPosition(0);
-                    Drive(500,0.5);
-                    Turn(20,0,0.5);
+                    telemetry.addLine("Right Spike Mark");
 
 
                 }
@@ -195,11 +169,7 @@ public class RedRight extends LinearOpMode {
                     RightClaw.setPosition(1);
                     sleep(2000);
                     Drive(4000,0.5);*/
-                    LeftClaw.setPosition(0.3);
-                    sleep(2000);
-                    Drive(-4500,0.5);
-                    LeftClaw.setPosition(0);
-                    Drive(500,0.5);
+                    telemetry.addLine("Middle Spike Mark");
                 }
 
                 /*Drive(1700,0.5);

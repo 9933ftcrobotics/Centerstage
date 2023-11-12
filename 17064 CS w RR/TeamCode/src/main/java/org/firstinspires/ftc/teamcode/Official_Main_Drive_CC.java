@@ -61,7 +61,8 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double Left_Stick_Angle, Left_Stick_Ratio, Left_Stick_Magnitude;
     double Left_Stick_Y, Left_Stick_X;
     double Robot_Angle, Output_Angle;
-    double ClawPositionClosed = 0.3;
+    double RightClawPositionClosed = 0.21;
+    double LeftClawPositionClosed = 0.3;
     double LTrigger = 0;
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
@@ -82,7 +83,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         RightClaw = hardwareMap.get(Servo.class, "RightClaw");
         DroneLauncher = hardwareMap.get(Servo.class, "DroneLauncher");
 
-
+        ClimberLeft.setDirection(DcMotor.Direction.REVERSE);
         ClimberLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberLeft.setTargetPosition(0);
         ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -310,20 +311,20 @@ else
                 if(gamepad1.dpad_up | gamepad2.dpad_up)
                 {
 
-                    ArmUpDown.setTargetPosition(700);
+                    ArmUpDown.setTargetPosition(620);
                     LTrigger = 0.2;
                     if( ArmUpDown.getTargetPosition() > 300)
                     {
 
-                        ArmInOut.setTargetPosition(1500);
+                        ArmInOut.setTargetPosition(1408);
                     }
 
                 }
                 else if(gamepad1.dpad_left | gamepad2.dpad_left)
                 {
 
-                    ArmUpDown.setTargetPosition(350);
-                    ArmInOut.setTargetPosition(0);
+                    ArmUpDown.setTargetPosition(450);
+                    ArmInOut.setTargetPosition(739);
                     LTrigger = 0.2;
                 }
                 else if(gamepad1.dpad_down | gamepad2.dpad_down)
@@ -341,16 +342,18 @@ else
                     ArmInOut.setTargetPosition(0);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
-                        ArmUpDown.setTargetPosition(100);
+                        ArmUpDown.setTargetPosition(150);
                     }
                 }
 
-                if(gamepad1.back | gamepad2.back)
-                {
+                if (gamepad1.back) {
                     DroneLauncher.setPosition(1);
+                } else {
+                    DroneLauncher.setPosition(0);
                 }
-                else
-                {
+                if (gamepad2.back) {
+                    DroneLauncher.setPosition(1);
+                } else {
                     DroneLauncher.setPosition(0);
                 }
 
@@ -358,12 +361,12 @@ else
                 {
                     if (LeftClawClamped)
                     {
-                        LeftClaw.setPosition(gamepad1.left_trigger*ClawPositionClosed);
+                        LeftClaw.setPosition(gamepad1.left_trigger*LeftClawPositionClosed);
                         LeftClawClamped = false;
                         LeftBumperIsPressed = true;
                     } else
                     {
-                        LeftClaw.setPosition(ClawPositionClosed);
+                        LeftClaw.setPosition(LeftClawPositionClosed);
                         LeftClawClamped = true;
                         LeftBumperIsPressed = true;
                     }
@@ -371,7 +374,7 @@ else
 
                 if (LeftClawClamped == false)
                 {
-                    LeftClaw.setPosition(gamepad1.left_trigger*ClawPositionClosed);
+                    LeftClaw.setPosition(gamepad1.left_trigger*LeftClawPositionClosed);
                 }
 
                 if (gamepad1.left_bumper == false)
@@ -383,12 +386,12 @@ else
                 {
                     if (RightClawClamped)
                     {
-                        RightClaw.setPosition(gamepad1.right_trigger*ClawPositionClosed);
+                        RightClaw.setPosition(gamepad1.right_trigger*RightClawPositionClosed);
                         RightClawClamped = false;
                         RightBumperIsPressed = true;
                     } else
                     {
-                        RightClaw.setPosition(ClawPositionClosed);
+                        RightClaw.setPosition(RightClawPositionClosed);
                         RightClawClamped = true;
                         RightBumperIsPressed = true;
                     }
@@ -396,7 +399,7 @@ else
 
                 if (RightClawClamped == false)
                 {
-                    RightClaw.setPosition(gamepad1.right_trigger*ClawPositionClosed);
+                    RightClaw.setPosition(gamepad1.right_trigger*RightClawPositionClosed);
                 }
 
                 if (gamepad1.right_bumper == false)
@@ -407,8 +410,8 @@ else
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(500);
-                    ClimberRight.setTargetPosition(500);
+                    ClimberLeft.setTargetPosition(2400);
+                    ClimberRight.setTargetPosition(2400);
                 }
                 else
                 {
@@ -418,8 +421,8 @@ else
 
                 if(gamepad1.left_stick_button | gamepad2.left_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(-100);
-                    ClimberRight.setTargetPosition(-100);
+                    ClimberLeft.setTargetPosition(0);
+                    ClimberRight.setTargetPosition(0);
                 }
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());

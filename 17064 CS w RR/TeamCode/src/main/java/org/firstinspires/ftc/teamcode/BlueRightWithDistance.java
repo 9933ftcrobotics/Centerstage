@@ -23,9 +23,9 @@ import java.util.List;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "RedRight", group = "")
+@Autonomous(name = "BlueRightWithDistance", group = "")
 //@Disabled
-public class RedRight extends LinearOpMode {
+public class BlueRightWithDistance extends LinearOpMode {
 
     BNO055IMU imu;
 
