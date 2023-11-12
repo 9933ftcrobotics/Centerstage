@@ -61,6 +61,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double Left_Stick_Angle, Left_Stick_Ratio, Left_Stick_Magnitude;
     double Left_Stick_Y, Left_Stick_X;
     double Robot_Angle, Output_Angle;
+    double ClawClosedPosition = 0.5;
     double LTrigger = 0;
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
@@ -85,8 +86,9 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         ClimberLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberLeft.setTargetPosition(0);
         ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ClimberLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        ClimberRight.setDirection(DcMotor.Direction.REVERSE);
+        //ClimberRight.setDirection(DcMotor.Direction.REVERSE);
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
         ClimberRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -104,6 +106,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         RearLeft.setDirection(DcMotor.Direction.REVERSE);
 
         RightClaw.setDirection(Servo.Direction.REVERSE);
+        DroneLauncher.setDirection(Servo.Direction.REVERSE);
 
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -344,23 +347,23 @@ else
 
                 if(gamepad1.back | gamepad2.back)
                 {
-                    DroneLauncher.setPosition(0.5);
+                    DroneLauncher.setPosition(1);
                 }
                 else
                 {
-                    DroneLauncher.setPosition(0);
+                    DroneLauncher.setPosition(0.3);
                 }
 
                 if(gamepad1.left_bumper && LeftBumperIsPressed == false)
                 {
                     if (LeftClawClamped)
                     {
-                        LeftClaw.setPosition(gamepad1.left_trigger*0.3);
+                        LeftClaw.setPosition(gamepad1.left_trigger*ClawClosedPosition);
                         LeftClawClamped = false;
                         LeftBumperIsPressed = true;
                     } else
                     {
-                        LeftClaw.setPosition(0.3);
+                        LeftClaw.setPosition(ClawClosedPosition);
                         LeftClawClamped = true;
                         LeftBumperIsPressed = true;
                     }
@@ -368,7 +371,7 @@ else
 
                 if (LeftClawClamped == false)
                 {
-                    LeftClaw.setPosition(gamepad1.left_trigger*0.3);
+                    LeftClaw.setPosition(gamepad1.left_trigger*ClawClosedPosition);
                 }
 
                 if (gamepad1.left_bumper == false)
@@ -380,12 +383,12 @@ else
                 {
                     if (RightClawClamped)
                     {
-                        RightClaw.setPosition(gamepad1.right_trigger*0.3);
+                        RightClaw.setPosition(gamepad1.right_trigger*ClawClosedPosition);
                         RightClawClamped = false;
                         RightBumperIsPressed = true;
                     } else
                     {
-                        RightClaw.setPosition(0.3);
+                        RightClaw.setPosition(ClawClosedPosition);
                         RightClawClamped = true;
                         RightBumperIsPressed = true;
                     }
@@ -393,7 +396,7 @@ else
 
                 if (RightClawClamped == false)
                 {
-                    RightClaw.setPosition(gamepad1.right_trigger*0.3);
+                    RightClaw.setPosition(gamepad1.right_trigger*ClawClosedPosition);
                 }
 
                 if (gamepad1.right_bumper == false)
@@ -404,12 +407,12 @@ else
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(1100);
-                    ClimberRight.setTargetPosition(2300);
+                    ClimberLeft.setTargetPosition(2075);
+                    ClimberRight.setTargetPosition(2075);
                 }
                 else
                 {
-                    ClimberLeft.setTargetPosition(50);
+                    ClimberLeft.setTargetPosition(0);
                     ClimberRight.setTargetPosition(0);
                 }
 

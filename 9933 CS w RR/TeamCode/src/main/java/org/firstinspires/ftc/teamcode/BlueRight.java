@@ -21,9 +21,9 @@ import java.util.List;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "Sample Auto", group = "")
+@Autonomous(name = "BlueRight", group = "")
 //@Disabled
-public class SampleAuto extends LinearOpMode {
+public class BlueRight extends LinearOpMode {
 
     BNO055IMU imu;
 
@@ -102,10 +102,10 @@ public class SampleAuto extends LinearOpMode {
 
 
 
-                    //Middle Spike
-                    RightClaw.setPosition(0.3);
-                    LeftClaw.setPosition(0.3);
-                    sleep(300);
+                //Middle Spike
+                RightClaw.setPosition(0.6);
+                LeftClaw.setPosition(0.6);
+                sleep(300);
                     /*Drive(9800,0.3);
                     //RightClaw.setPosition(0);
                     LeftClaw.setPosition(0);
@@ -113,7 +113,7 @@ public class SampleAuto extends LinearOpMode {
                     Drive(-1500,0.3);
                     //Turn(55,90,0.5);*/
 
-                    //Right Spike
+                //Right Spike
                     /*Drive(6800,0.3);
                     //RightClaw.setPosition(0);
                     Turn(0,45,0.5);
@@ -125,18 +125,18 @@ public class SampleAuto extends LinearOpMode {
                     //Drive(-1500,0.3);
                     //Turn(55,90,0.5);*/
 
-                    //Left Spike
-                    Drive(1000,0.3);
-                    //RightClaw.setPosition(0);
-                    Turn(-10,-10,0.5);
-                    //Drive(2000,0.3);
-                    Drive(6500,0.3);
-                    LeftClaw.setPosition(0);
-                    sleep(500);
-                    Drive(-1500,0.3);
-                    Turn(-10,0,0.5);
-                    //Drive(-1500,0.3);
-                    //Turn(55,90,0.5);
+                //Right Spike
+                Drive(1000,0.3);
+                //RightClaw.setPosition(0);
+                Turn(10,10,0.5);
+                //Drive(2000,0.3);
+                Drive(6500,0.3);
+                LeftClaw.setPosition(0.3);
+                sleep(500);
+                Drive(-1500,0.3);
+                Turn(10,0,0.5);
+                //Drive(-1500,0.3);
+                //Turn(55,90,0.50);
 
 
 
