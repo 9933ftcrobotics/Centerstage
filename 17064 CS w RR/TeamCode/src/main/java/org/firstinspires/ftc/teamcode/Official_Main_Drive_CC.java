@@ -332,8 +332,8 @@ else
 
                     ArmInOut.setTargetPosition(0);
 
-                    ArmUpDown.setTargetPosition(10);
-                    LTrigger = 0.35;
+                    ArmUpDown.setTargetPosition(50);
+                    LTrigger = 0.45;
                 }
                 else
                 {

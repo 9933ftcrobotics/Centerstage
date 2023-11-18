@@ -37,7 +37,7 @@ public class BlueRightWithDistance extends LinearOpMode {
     private DcMotor FrontLeft;
     private DcMotor RearRight;
     private DcMotor RearLeft;
-    private Servo LeftClaw;
+    private Servo RightClaw;
     private DcMotor ArmUpDown;
     private DistanceSensor LeftDistance;
     private DistanceSensor RightDistance;
@@ -56,7 +56,7 @@ public class BlueRightWithDistance extends LinearOpMode {
         FrontLeft=hardwareMap.dcMotor.get("leftFront");
         RearRight=hardwareMap.dcMotor.get("rightRear");
         RearLeft=hardwareMap.dcMotor.get("leftRear");
-        LeftClaw=hardwareMap.servo.get("LeftClaw");
+        RightClaw=hardwareMap.servo.get("RightClaw");
         ArmUpDown=hardwareMap.dcMotor.get("ArmUpDown");
         LeftDistance = hardwareMap.get(DistanceSensor.class, "LeftDistance");
         RightDistance = hardwareMap.get(DistanceSensor.class, "RightDistance");
@@ -97,6 +97,7 @@ public class BlueRightWithDistance extends LinearOpMode {
             ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             if (opModeIsActive()) {
+                RightClaw.setPosition(0.3);
                 ArmUpDown.setPower(0.5);
                 ArmUpDown.setTargetPosition(50);
                 angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -115,6 +116,8 @@ public class BlueRightWithDistance extends LinearOpMode {
                 telemetry.addData("Left", LeftDistance.getDistance(DistanceUnit.CM));
                 telemetry.addData("Right", RightDistance.getDistance(DistanceUnit.CM));
                 telemetry.update();
+
+
 
 
 
@@ -158,13 +161,12 @@ public class BlueRightWithDistance extends LinearOpMode {
                     Drive(1700,0.5);
                     Turn(-30,0,0.5);
                     Drive(2500,0.5);*/
-                    LeftClaw.setPosition(0.3);
                     sleep(500);
                     Drive(-8600,0.5);
                     Turn(90,0,0.3);
                     Drive(-200,0.5);
                     sleep(500);
-                    LeftClaw.setPosition(0);
+                    RightClaw.setPosition(0);
                     Drive(200,0.5);
                     Turn(-90,0,0.3);
                 }
@@ -177,12 +179,11 @@ public class BlueRightWithDistance extends LinearOpMode {
                     sleep(2000);
                     Drive(1250,0.5);
                     Turn(20,0,0.5);*/
-                    LeftClaw.setPosition(0.3);
                     sleep(500); //right spike
                     Drive(-3800,0.5);
                     Turn(-20,0,0.5);
                     Drive(-1000,0.5);
-                    LeftClaw.setPosition(0);
+                    RightClaw.setPosition(0);
                     Drive(500,0.5);
                     Turn(20,0,0.5);
 
@@ -195,10 +196,9 @@ public class BlueRightWithDistance extends LinearOpMode {
                     RightClaw.setPosition(1);
                     sleep(2000);
                     Drive(4000,0.5);*/
-                    LeftClaw.setPosition(0.3);
                     sleep(2000);
                     Drive(-4500,0.5);
-                    LeftClaw.setPosition(0);
+                    RightClaw.setPosition(0);
                     Drive(500,0.5);
                 }
 

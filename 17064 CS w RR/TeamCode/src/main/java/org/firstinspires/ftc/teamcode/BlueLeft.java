@@ -99,6 +99,7 @@ public class BlueLeft extends LinearOpMode {
 
 
             if (opModeIsActive()) {
+                RightClaw.setPosition(0.3);
                 ArmUpDown.setPower(0.5);
                 ArmUpDown.setTargetPosition(50);
                 angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -160,7 +161,6 @@ public class BlueLeft extends LinearOpMode {
                     Drive(1700,0.5);
                     Turn(-30,0,0.5);
                     Drive(2500,0.5);*/
-                    RightClaw.setPosition(0.3);
                     sleep(500);
                     Drive(-3800,0.5);
                     Turn(-20,0,0.3);
@@ -179,7 +179,6 @@ public class BlueLeft extends LinearOpMode {
                     sleep(2000);
                     Drive(1250,0.5);
                     Turn(20,0,0.5);*/
-                    RightClaw.setPosition(0.3);
                     sleep(500); //right spike
                     Drive(-8600,0.5);
                     Turn(90,0,0.5);
@@ -197,7 +196,6 @@ public class BlueLeft extends LinearOpMode {
                     RightClaw.setPosition(1);
                     sleep(2000);
                     Drive(4000,0.5);*/
-                    RightClaw.setPosition(0.3);
                     sleep(2000);
                     Drive(-4500,0.5);
                     RightClaw.setPosition(0);
