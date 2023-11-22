@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -19,7 +20,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+
 import java.lang.Math;
+
 
 @TeleOp(name = "Official_Main_Drive_CC", group = "")
 //@Disabled
@@ -35,11 +38,14 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     private DcMotor ArmUpDown;
 
 
+
+
     private Servo LeftClaw;
     private Servo RightClaw;
     private Servo DroneLauncher;
-  /*private DcMotor RightMotor;
-  private DcMotor LeftMotor;*/
+ /*private DcMotor RightMotor;
+ private DcMotor LeftMotor;*/
+
 
     private BNO055IMU imu;
     private boolean temp;
@@ -48,14 +54,19 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double SpeedReducer = 0;
 
 
+
+
     //declare motor speed variables
     double RF, LF, RR, LR;
+
 
     //declare joystick position variables
     double X1, Y1, X2, Y2;
 
+
     //operational constants
     double joyScale = 0.7;  //0.5;
+
 
     double motorMax = 0.7;  //0.6;
     double Left_Stick_Angle, Left_Stick_Ratio, Left_Stick_Magnitude;
@@ -67,13 +78,25 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
 
+
+    boolean OverRide = false;
+
+
+    double fast = 0.7;
+
+
+    double slow = 0.3;
+
+
     @Override
     public void runOpMode () {
+
 
         FrontRight=hardwareMap.dcMotor.get("rightFront");
         FrontLeft=hardwareMap.dcMotor.get("leftFront");
         RearRight=hardwareMap.dcMotor.get("rightRear");
         RearLeft=hardwareMap.dcMotor.get("leftRear");
+
 
         ClimberLeft = hardwareMap.get(DcMotor.class, "ClimberLeft");
         ClimberRight = hardwareMap.get(DcMotor.class, "ClimberRight");
@@ -83,31 +106,38 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         RightClaw = hardwareMap.get(Servo.class, "RightClaw");
         DroneLauncher = hardwareMap.get(Servo.class, "DroneLauncher");
 
+
         ClimberLeft.setDirection(DcMotor.Direction.REVERSE);
         ClimberLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberLeft.setTargetPosition(0);
         ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
         ClimberRight.setDirection(DcMotor.Direction.REVERSE);
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
         ClimberRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
         ArmInOut.setDirection(DcMotor.Direction.REVERSE);
         ArmInOut.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmInOut.setTargetPosition(0);
         ArmInOut.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
         ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmUpDown.setTargetPosition(0);
         ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
         RearLeft.setDirection(DcMotor.Direction.REVERSE);
+
 
         //LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.REVERSE);
         DroneLauncher.setDirection(Servo.Direction.REVERSE);
+
 
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -119,15 +149,19 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         ClimberRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
+
+
         BNO055IMU.Parameters imuParameters;
         Orientation angles;
         Acceleration gravity;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-  /*RightMotor = hardwareMap.dcMotor.get("RightMotor");
-  LeftMotor = hardwareMap.dcMotor.get("LeftMotor");*/
+ /*RightMotor = hardwareMap.dcMotor.get("RightMotor");
+ LeftMotor = hardwareMap.dcMotor.get("LeftMotor");*/
+
 
         temp = true;
         count = 0;
+
 
         // Create new IMU Parameters object.
         imuParameters = new BNO055IMU.Parameters();
@@ -140,20 +174,26 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         // Initialize IMU.
         imu.initialize(imuParameters);
 
+
         //RightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         //RightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //LeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
+
+
         waitForStart();
         if (opModeIsActive()) {
+
 
             ArmUpDown.setPower(0.5);
             ArmInOut.setPower(1);
             ClimberLeft.setPower(1);
             ClimberRight.setPower(1);
             while (opModeIsActive()) {
+
 
                 if(gamepad1.right_stick_button)
                 {
@@ -165,14 +205,17 @@ public class Official_Main_Drive_CC extends LinearOpMode {
                 }
 
 
+
+
                 if(FC == true)
                 {
                     LF = 0; RF = 0; LR = 0; RR = 0; X1 = 0; Y1 = 0;
 
+
                     //Setting up Variables
-    /*if(gamepad1.a )
+   /*if(gamepad1.a )
 {
-   motorMax = 0.3;  //0.5;
+  motorMax = 0.3;  //0.5;
 }
 else
 {*/
@@ -189,10 +232,13 @@ else
 
 
 
+
+
+
                         //if left stick y greater than 0
                         if(Left_Stick_Y > 0){
-      /*it creates this ratio left stick x/ left stick y, then it calulates the angle
-      this is the same thing for the false just add 180 to the angle*/
+     /*it creates this ratio left stick x/ left stick y, then it calulates the angle
+     this is the same thing for the false just add 180 to the angle*/
                             Left_Stick_Angle = Math.toDegrees(Math.atan(Left_Stick_Ratio));
                         }
                         else{
@@ -203,6 +249,7 @@ else
                         Left_Stick_Magnitude = Math.sqrt(Math.pow(Left_Stick_Y,2)
                                 + Math.pow(Left_Stick_X,2));
 
+
                         //output angle is the way the robot wil go based on the joystick angle - the current robot angle
                         //the lines after it are just implementing them
                         Output_Angle = Left_Stick_Angle - Robot_Angle;
@@ -211,23 +258,30 @@ else
                         //LTrigger = (1 - gamepad1.left_trigger);
                         //LTrigger = Math.max(LTrigger, 0.2);
 
+
                         //this will set a value for the x and y axis of the motor
                         Y1 = Math.cos(Math.toRadians(Output_Angle)) * Left_Stick_Magnitude;
                         X1 = Math.sin(Math.toRadians(Output_Angle)) * Left_Stick_Magnitude;
 
+
                     }
                     X2 = gamepad1.right_stick_x * joyScale;
+
 
                     // Forward/back movement
                     LF += Y1; RF += Y1; LR += Y1; RR += Y1;
 
+
                     //Side to side movement
                     LF += X1; RF -= X1; LR -= X1; RR += X1;
+
 
                     //Rotation Movement
                     LF += X2; RF -= X2; LR += X2; RR -= X2;
 
+
                     //Motor Speed
+
 
                     //Clip motor power values to +/- motorMax
                     LF = Math.max(-motorMax, Math.min(LF, motorMax));
@@ -236,22 +290,27 @@ else
                     RR = Math.max(-motorMax, Math.min(RR, motorMax));
 
 
+
+
                     //Send values to the motors
-                    /*if(gamepad1.left_trigger > gamepad2.left_trigger)
-                    {
-                        LTrigger = (0.75 - gamepad1.left_trigger);
-                        LTrigger = Math.max(LTrigger, 0.2);
-                    }
-                    else
-                    {
-                        LTrigger = (0.75 - gamepad2.left_trigger);
-                        LTrigger = Math.max(LTrigger, 0.2);
-                    }*/
+                   /*if(gamepad1.left_trigger > gamepad2.left_trigger)
+                   {
+                       LTrigger = (0.75 - gamepad1.left_trigger);
+                       LTrigger = Math.max(LTrigger, 0.2);
+                   }
+                   else
+                   {
+                       LTrigger = (0.75 - gamepad2.left_trigger);
+                       LTrigger = Math.max(LTrigger, 0.2);
+                   }*/
+
 
                     FrontLeft.setPower(LF * LTrigger);
                     FrontRight.setPower(RF * LTrigger);
                     RearLeft.setPower(LR * LTrigger);
                     RearRight.setPower(RR * LTrigger);
+
+
 
 
                 }
@@ -261,7 +320,10 @@ else
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     gravity = imu.getGravity();
 
+
                     X2 = gamepad1.right_stick_x * joyScale;
+
+
 
 
                     if(gamepad1.left_trigger > gamepad1.left_trigger)
@@ -280,22 +342,30 @@ else
                     Y2 = -gamepad1.right_stick_y * joyScale;  //Y2 is not used at present
 
 
+
+
                     // Forward/back movement
                     LF += Y1; RF += Y1; LR += Y1; RR += Y1;
+
 
                     //Side to side movement
                     LF += X1; RF -= X1; LR -= X1; RR += X1;
 
+
                     //Rotation Movement
                     LF += X2; RF -= X2; LR += X2; RR -= X2;
 
+
                     motorMax = 1;
+
 
                     //Clip motor power values to +/- motorMax
                     LF = Math.max(-motorMax, Math.min(LF, motorMax));
                     RF = Math.max(-motorMax, Math.min(RF, motorMax));
                     LR = Math.max(-motorMax, Math.min(LR, motorMax));
                     RR = Math.max(-motorMax, Math.min(RR, motorMax));
+
+
 
 
                     //Send values to the motors
@@ -307,36 +377,65 @@ else
 
 
 
+
+
+
+
                 }
+
+
+
+
+
+
+
+
                 if(gamepad1.dpad_up | gamepad2.dpad_up)
                 {
 
+
                     ArmUpDown.setTargetPosition(620);
-                    LTrigger = 0.2;
+                    LTrigger = slow;
+
+
                     if( ArmUpDown.getTargetPosition() > 300)
                     {
 
+
                         ArmInOut.setTargetPosition(1408);
                     }
+
 
                 }
                 else if(gamepad1.dpad_left | gamepad2.dpad_left)
                 {
 
+
                     ArmUpDown.setTargetPosition(450);
                     ArmInOut.setTargetPosition(739);
-                    LTrigger = 0.2;
+
+
+                    LTrigger = slow;
+
+
                 }
                 else if(gamepad1.dpad_down | gamepad2.dpad_down)
                 {
 
+
                     ArmInOut.setTargetPosition(0);
 
+
                     ArmUpDown.setTargetPosition(50);
-                    LTrigger = 0.45;
+
+
+                    LTrigger = slow;
+
+
                 }
                 else
                 {
+
 
                     LTrigger = 0.7;
                     ArmInOut.setTargetPosition(0);
@@ -345,6 +444,7 @@ else
                         ArmUpDown.setTargetPosition(150);
                     }
                 }
+
 
                 if (gamepad1.back) {
                     DroneLauncher.setPosition(1);
@@ -356,6 +456,7 @@ else
                 } else {
                     DroneLauncher.setPosition(0);
                 }
+
 
                 if(gamepad1.left_bumper && LeftBumperIsPressed == false)
                 {
@@ -372,15 +473,18 @@ else
                     }
                 }
 
+
                 if (LeftClawClamped == false)
                 {
                     LeftClaw.setPosition(gamepad1.left_trigger*LeftClawPositionClosed);
                 }
 
+
                 if (gamepad1.left_bumper == false)
                 {
                     LeftBumperIsPressed = false;
                 }
+
 
                 if(gamepad1.right_bumper && RightBumperIsPressed == false)
                 {
@@ -397,15 +501,19 @@ else
                     }
                 }
 
+
                 if (RightClawClamped == false)
                 {
                     RightClaw.setPosition(gamepad1.right_trigger*RightClawPositionClosed);
                 }
 
+
                 if (gamepad1.right_bumper == false)
                 {
                     RightBumperIsPressed = false;
                 }
+
+
 
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
@@ -419,32 +527,47 @@ else
                     ClimberRight.setTargetPosition(0);
                 }
 
+
                 if(gamepad1.left_stick_button | gamepad2.left_stick_button)
                 {
                     ClimberLeft.setTargetPosition(0);
                     ClimberRight.setTargetPosition(0);
                 }
 
+
+                if (gamepad2.y) {
+                    slow = 0.7; //Override.
+                } else if (!gamepad2.y) {
+                    slow = 0.3; //Slow speed
+                }
+
+
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
                 telemetry.addData("Arm In Out Current",ArmInOut.getCurrentPosition());
                 telemetry.addLine("");
                 telemetry.addData("Arm Up Down Target",ArmUpDown.getTargetPosition());
                 telemetry.addData("Arm Up Down Current",ArmUpDown.getCurrentPosition());
-                /*telemetry.addLine("");
-                telemetry.addData("LeftClaw",LeftClaw.getPosition());
+               /*telemetry.addLine("");
+               telemetry.addData("LeftClaw",LeftClaw.getPosition());
 
-                telemetry.addLine("");
-                telemetry.addData("Left Bumper",gamepad1.left_bumper);
-                telemetry.addData("Left Bumper ispressed",ispressed);
-                telemetry.addData("Left Bumper Clamped",LeftClawClamped);*/
+
+               telemetry.addLine("");
+               telemetry.addData("Left Bumper",gamepad1.left_bumper);
+               telemetry.addData("Left Bumper ispressed",ispressed);
+               telemetry.addData("Left Bumper Clamped",LeftClawClamped);*/
                 telemetry.addLine("");
                 telemetry.addData("Robot Angle",Robot_Angle);
                 telemetry.update();
+
+
 
 
             }
         }
     }
 }
+
+
+
 
 
