@@ -35,6 +35,7 @@ public class ParkBotBlueRight extends LinearOpMode {
         ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmUpDown.setTargetPosition(0);
         ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ArmUpDown.setPower(1);
 
         LeftClaw.setDirection(Servo.Direction.REVERSE);
 
@@ -44,7 +45,9 @@ public class ParkBotBlueRight extends LinearOpMode {
 
         RightClaw.setPosition(0.21);
         LeftClaw.setPosition(0.3);
-        ArmUpDown.setTargetPosition(100);
+        sleep(1000);
+        ArmUpDown.setTargetPosition(200);
+
 
         if (isStopRequested()) return;
         drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));

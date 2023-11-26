@@ -12,9 +12,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
-@Autonomous(group = "ParkBotRedRight")
+@Autonomous(group = "AutoClawTest")
 
-public class ParkBotRedRight extends LinearOpMode {
+public class AutoClawTest extends LinearOpMode {
+
     private Servo RightClaw;
     private Servo LeftClaw;
     private DcMotor ArmUpDown;
@@ -24,9 +25,9 @@ public class ParkBotRedRight extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        RightClaw=hardwareMap.servo.get("RightClaw");
-        LeftClaw=hardwareMap.servo.get("LeftClaw");
-        ArmUpDown=hardwareMap.dcMotor.get("ArmUpDown");
+        RightClaw = hardwareMap.servo.get("RightClaw");
+        LeftClaw = hardwareMap.servo.get("LeftClaw");
+        ArmUpDown = hardwareMap.dcMotor.get("ArmUpDown");
         LeftDistance = hardwareMap.get(DistanceSensor.class, "LeftDistance");
         RightDistance = hardwareMap.get(DistanceSensor.class, "RightDistance");
 
@@ -41,21 +42,25 @@ public class ParkBotRedRight extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();
+        while (opModeIsActive()) {
 
-        RightClaw.setPosition(0.21);
-        LeftClaw.setPosition(0.3);
-        sleep(1000);
-        ArmUpDown.setTargetPosition(100);
 
-        if (isStopRequested()) return;
-        drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
+            RightClaw.setPosition(0.21);
+            LeftClaw.setPosition(0.3);
+            sleep(1000);
+            ArmUpDown.setTargetPosition(200);
+
+
+            if (isStopRequested()) return;
+        /*drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
         TrajectorySequence trajseq = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
-                .forward(2)
-                .strafeRight(45)
+                .forward(50)
+                .strafeLeft(95)
                 .build();
 
 
-        drive.followTrajectorySequence(trajseq);
+        drive.followTrajectorySequence(trajseq);*/
 
+        }
     }
 }
