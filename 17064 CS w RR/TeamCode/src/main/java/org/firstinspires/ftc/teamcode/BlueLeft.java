@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -24,7 +25,7 @@ import java.util.List;
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @Autonomous(name = "BlueLeft", group = "")
-//@Disabled
+@Disabled
 public class BlueLeft extends LinearOpMode {
 
     BNO055IMU imu;

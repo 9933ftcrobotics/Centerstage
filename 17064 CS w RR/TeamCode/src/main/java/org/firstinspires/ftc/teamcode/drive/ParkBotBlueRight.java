@@ -52,7 +52,7 @@ public class ParkBotBlueRight extends LinearOpMode {
         if (isStopRequested()) return;
         drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
         TrajectorySequence trajseq = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
-                .forward(50)
+                .forward(54)
                 .strafeLeft(95)
                 .build();
 

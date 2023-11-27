@@ -73,7 +73,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double Left_Stick_Y, Left_Stick_X;
     double Robot_Angle, Output_Angle;
     double RightClawPositionClosed = 0.21;
-    double LeftClawPositionClosed = 0.3;
+    double LeftClawPositionClosed = 0.27;
     double LTrigger = 0;
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
