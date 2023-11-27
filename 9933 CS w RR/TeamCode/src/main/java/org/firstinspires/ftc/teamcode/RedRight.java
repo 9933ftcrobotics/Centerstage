@@ -17,9 +17,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 
 //import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Autonomous(name = "BlueRight", group = "")
+@Autonomous(name = "RedRight", group = "")
 //@Disabled
-public class BlueRight extends LinearOpMode {
+public class RedRight extends LinearOpMode {
 
     BNO055IMU imu;
 
@@ -33,6 +33,7 @@ public class BlueRight extends LinearOpMode {
     private DcMotor RearLeft;
     private Servo RightClaw;
     private Servo LeftClaw;
+    private DcMotor ArmUpDown;
     double Next = 0;
     int Ticks = 0;
     int Ticks2 = 0;
@@ -50,6 +51,11 @@ public class BlueRight extends LinearOpMode {
         RearLeft=hardwareMap.dcMotor.get("leftRear");
         RightClaw=hardwareMap.servo.get("RightClaw");
         LeftClaw=hardwareMap.servo.get("LeftClaw");
+        ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+
+        ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmUpDown.setTargetPosition(0);
+        ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         RightClaw.setDirection(Servo.Direction.REVERSE);
 
@@ -86,6 +92,7 @@ public class BlueRight extends LinearOpMode {
             if (opModeIsActive()) {
                 angles  = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
+                ArmUpDown.setPower(0.5);
 
                 FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -123,15 +130,22 @@ public class BlueRight extends LinearOpMode {
 
                 //Right Spike
                 Drive(1000,0.3);
-                //RightClaw.setPosition(0);
                 Turn(10,10,0.5);
                 //Drive(2000,0.3);
                 Drive(6500,0.3);
                 LeftClaw.setPosition(0.3);
                 sleep(500);
-                Drive(-1500,0.3);
-                Turn(10,0,0.5);
-                //Drive(-1500,0.3);
+                Drive(-1000,0.3);
+                Turn(-80,0,0.5);
+                Drive(-9000,0.3);
+                ArmUpDown.setTargetPosition(1300);
+                sleep(1500);
+                RightClaw.setPosition(0.3);
+                sleep(800);
+                ArmUpDown.setTargetPosition(0);
+                sleep(1500);
+                Turn(-10,0,0.5);
+
                 //Turn(55,90,0.50);
 
 

@@ -311,7 +311,7 @@ else
                 {
 
                     ArmUpDown.setTargetPosition(1300);
-                    LTrigger = 0.2;
+                    LTrigger = 0.3;
                     if( ArmUpDown.getTargetPosition() > 300)
                     {
 
@@ -324,7 +324,7 @@ else
 
                     ArmUpDown.setTargetPosition(700);
                     ArmInOut.setTargetPosition(0);
-                    LTrigger = 0.2;
+                    LTrigger = 0.3;
                 }
                 else if(gamepad1.dpad_down | gamepad2.dpad_down)
                 {
@@ -332,7 +332,7 @@ else
                     ArmInOut.setTargetPosition(0);
 
                     ArmUpDown.setTargetPosition(0);
-                    LTrigger = 0.2;
+                    LTrigger = 0.3;
                 }
                 else
                 {

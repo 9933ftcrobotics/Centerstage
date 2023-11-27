@@ -16,6 +16,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 
 import java.util.List;
 
@@ -37,6 +40,8 @@ public class SampleAuto extends LinearOpMode {
     private DcMotor RearLeft;
     private Servo RightClaw;
     private Servo LeftClaw;
+    private DistanceSensor LeftDistance;
+    private DistanceSensor RightDistance;
     double Next = 0;
     int Ticks = 0;
     int Ticks2 = 0;
@@ -54,6 +59,8 @@ public class SampleAuto extends LinearOpMode {
         RearLeft=hardwareMap.dcMotor.get("leftRear");
         RightClaw=hardwareMap.servo.get("RightClaw");
         LeftClaw=hardwareMap.servo.get("LeftClaw");
+        LeftDistance=hardwareMap.get(DistanceSensor.class,"LeftDistance");
+        RightDistance=hardwareMap.get(DistanceSensor.class,"RightDistance");
 
         RightClaw.setDirection(Servo.Direction.REVERSE);
 
