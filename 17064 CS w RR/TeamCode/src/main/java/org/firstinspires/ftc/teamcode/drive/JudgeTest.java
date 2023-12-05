@@ -4,25 +4,27 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-/*
- * This is an example of a more complex path to really test the tuning.
- */
-@Autonomous(group = "AutoTest")
 
-public class AutoTest extends LinearOpMode {
+@Autonomous(group = "JudgeTest")
 
+public class JudgeTest extends LinearOpMode {
     private DcMotor ArmUpDown;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+        ArmUpDown=hardwareMap.dcMotor.get("ArmUpDown");
 
+        ArmUpDown.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmUpDown.setTargetPosition(0);
         ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -32,30 +34,18 @@ public class AutoTest extends LinearOpMode {
 
         waitForStart();
 
+        ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
+
         if (isStopRequested()) return;
-
-        ArmUpDown.setTargetPosition(150);
-
-
         drive.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
         TrajectorySequence trajseq = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(90)))
-                .strafeRight(20)
-                .lineToSplineHeading(new Pose2d(8, 20, Math.toRadians(0)))
+                .lineToSplineHeading(new Pose2d(0, 38, Math.toRadians(0)))
+                .strafeRight(38)
                 .turn(Math.toRadians(90))
-                .forward(10)
-                .strafeLeft(20)
-                .lineToConstantHeading(new Vector2d(0,0))
                 .build();
 
 
         drive.followTrajectorySequence(trajseq);
 
-        /*sleep(2000);
-
-        drive.followTrajectory(
-                drive.trajectoryBuilder(traj.end(), true)
-                        .splineTo(new Vector2d(0, 0), Math.toRadians(180))
-                        .build()
-        );*/
     }
 }

@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(group = "BlueRightWithDistanceAndRoad")
-
+@Disabled
 public class BlueRightWithDistanceAndRoad extends LinearOpMode {
 
     private DcMotor ArmInOut;
@@ -49,15 +50,19 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
             ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             ArmUpDown.setTargetPosition(0);
             ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            ArmUpDown.setPower(0.6);
+            ArmUpDown.setPower(1);
+
+        RightClaw.setDirection(Servo.Direction.REVERSE);
 
             SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
             waitForStart();
 
-                if (isStopRequested()) return;
+                    if (isStopRequested()) return;
 
-                if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
+                /*if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
+                    telemetry.addLine("Hello");
+
                     markernumber = 2; //Marker right
                     LeftClaw.setPosition(0.31);
                     //RightClaw.setPosition(0.21);
@@ -89,7 +94,7 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
                             .turn(Math.toRadians(-90))
                             .forward(26.5)
                             .turn(Math.toRadians(90))*/
-                            .build();
+                            /*.build();
                     drive.followTrajectorySequence(RightPartTwo);
 
 
@@ -110,7 +115,7 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
                     drive.followTrajectorySequence(RightPartFour);*/
 
 
-                } else if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
+                /*} else if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
                     markernumber = 0; //Marker left
 
                     LeftClaw.setPosition(0.31);
@@ -143,20 +148,20 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
                             .turn(Math.toRadians(-90))
                             .forward(26.5)
                             .turn(Math.toRadians(90))*/
-                            .build();
+                            /*.build();
                     drive.followTrajectorySequence(LeftPartTwo);
-                } else {
+                } else {*/
                     markernumber = 1; //Marker Middle
 
                     LeftClaw.setPosition(0.3);
-                    //RightClaw.setPosition(0.12);
+                    RightClaw.setPosition(0.28);
                     sleep(1000);
                     ArmUpDown.setTargetPosition(150);
                     sleep(1000);
 
                     drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
                     TrajectorySequence MiddleOne = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
-                            .forward(25)
+                            .forward(28)
                             .build();
                     drive.followTrajectorySequence(MiddleOne);
 
@@ -166,34 +171,43 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
                     sleep(1000);
                     ArmUpDown.setTargetPosition(150);
 
-                    drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
-                    TrajectorySequence MiddleTwo = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
+                    //drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
+                    TrajectorySequence MiddleTwo = drive.trajectorySequenceBuilder(new Pose2d(8, -40, Math.toRadians(90)))
                             .back(5)
                             .strafeRight(26)
-                            .forward(5)
+                            .forward(10)
                             .turn(Math.toRadians(-90))
                             .build();
                     drive.followTrajectorySequence(MiddleTwo);
 
                     ArmUpDown.setTargetPosition(420);
+                    sleep(500);
+                    ArmInOut.setTargetPosition(100);
 
-                    drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
-                    TrajectorySequence MiddleThree = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
+                    //drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
+                    TrajectorySequence MiddleThree = drive.trajectorySequenceBuilder(new Pose2d(34, -35, Math.toRadians(-90)))
                             .forward(10)
                             .build();
                     drive.followTrajectorySequence(MiddleThree);
 
-                    RightClaw.setPosition(-0.1);
+                    RightClaw.setPosition(0);
                     sleep(1000);
 
-                    drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
-                    TrajectorySequence MiddleFour = drive.trajectorySequenceBuilder(new Pose2d(8, -60, Math.toRadians(90)))
+                    //drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
+                    TrajectorySequence MiddleFour = drive.trajectorySequenceBuilder(new Pose2d(34, -25, Math.toRadians(-90)))
                             .back(10)
                             .turn(Math.toRadians(90))
                             .build();
                     drive.followTrajectorySequence(MiddleFour);
-                    ArmUpDown.setTargetPosition(0);
-                }
+                    ArmUpDown.setTargetPosition(150);
+
+                    //drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
+                    TrajectorySequence MiddleFive = drive.trajectorySequenceBuilder(new Pose2d(34, -15, Math.toRadians(90)))
+                            .back(24)
+                            .strafeRight(20)
+                            .build();
+                    drive.followTrajectorySequence(MiddleFive);
+                //}
 
             if (markernumber == 0) {
                 telemetry.addLine("Left Spike Mark!");
@@ -205,6 +219,7 @@ public class BlueRightWithDistanceAndRoad extends LinearOpMode {
 
             telemetry.addData("Right Distance Sensor", RightDistance.getDistance(DistanceUnit.CM));
             telemetry.addData("Left Distance Sensor", LeftDistance.getDistance(DistanceUnit.CM));
+            telemetry.update();
 
     }
 }

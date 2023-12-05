@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 
 
 import java.lang.Math;
@@ -82,10 +83,16 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     boolean OverRide = false;
 
 
-    double fast = 0.7;
+    double normal = 0.7;
 
 
     double slow = 0.3;
+
+    public int ArmUpDownMidLocal = 550;
+
+    boolean XisPressed = false;
+
+    boolean BisPressed = false;
 
 
     @Override
@@ -394,7 +401,7 @@ else
                 {
 
 
-                    ArmUpDown.setTargetPosition(620);
+                    ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownHigh);
                     LTrigger = slow;
 
 
@@ -402,7 +409,7 @@ else
                     {
 
 
-                        ArmInOut.setTargetPosition(1408);
+                        ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutHigh);
                     }
 
 
@@ -411,8 +418,8 @@ else
                 {
 
 
-                    ArmUpDown.setTargetPosition(450);
-                    ArmInOut.setTargetPosition(739);
+                    ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownLow);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutLow);
 
 
                     LTrigger = slow;
@@ -423,25 +430,30 @@ else
                 {
 
 
-                    ArmInOut.setTargetPosition(0);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutGround);
 
 
-                    ArmUpDown.setTargetPosition(50);
+                    ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
 
 
                     LTrigger = slow;
 
 
+                } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
+                    ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
+
+                    LTrigger = slow;
                 }
                 else
                 {
 
 
                     LTrigger = 0.7;
-                    ArmInOut.setTargetPosition(0);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
-                        ArmUpDown.setTargetPosition(150);
+                        ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
                     }
                 }
 
@@ -467,7 +479,7 @@ else
                         LeftBumperIsPressed = true;
                     } else
                     {
-                        LeftClaw.setPosition(LeftClawPositionClosed);
+                        LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
                         LeftClawClamped = true;
                         LeftBumperIsPressed = true;
                     }
@@ -495,7 +507,7 @@ else
                         RightBumperIsPressed = true;
                     } else
                     {
-                        RightClaw.setPosition(RightClawPositionClosed);
+                        RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
                         RightClawClamped = true;
                         RightBumperIsPressed = true;
                     }
@@ -541,12 +553,42 @@ else
                     slow = 0.3; //Slow speed
                 }
 
+                //Change Max Speed
+                if (gamepad1.b && BisPressed == false || gamepad2.b && BisPressed == false) {
+                    normal += 0.1;
+                    BisPressed = true;
+                } else if (gamepad1.x && XisPressed == false || gamepad2.x && XisPressed == false) {
+                    normal -= 0.1;
+                    XisPressed = true;
+                }
+
+                if (!gamepad1.x && !gamepad2.x) {
+                    XisPressed = false;
+                }
+
+                if (!gamepad1.b && !gamepad2.b) {
+                    BisPressed = false;
+                }
+                //Max is 1 and Low is 0
+                if (normal > 1) {
+                    normal = 1;
+                } else if (normal < 0) {
+                    normal = 0;
+                }
+
+                LTrigger = normal;
+
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
                 telemetry.addData("Arm In Out Current",ArmInOut.getCurrentPosition());
                 telemetry.addLine("");
                 telemetry.addData("Arm Up Down Target",ArmUpDown.getTargetPosition());
                 telemetry.addData("Arm Up Down Current",ArmUpDown.getCurrentPosition());
+                telemetry.addData("Power",normal);
+                telemetry.addData("Slow",slow);
+                if (LTrigger == slow) {
+                    telemetry.addLine("LTrigger is Slow");
+                }
                /*telemetry.addLine("");
                telemetry.addData("LeftClaw",LeftClaw.getPosition());
 
@@ -565,7 +607,15 @@ else
             }
         }
     }
+
 }
+
+
+
+
+
+
+
 
 
 

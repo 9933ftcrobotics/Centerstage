@@ -4,11 +4,13 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
@@ -45,7 +47,7 @@ public class ParkBotRedLeft extends LinearOpMode {
         RightClaw.setPosition(0.21);
         LeftClaw.setPosition(0.3);
         sleep(1000);
-        ArmUpDown.setTargetPosition(100);
+        ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
 
         if (isStopRequested()) return;
         drive.setPoseEstimate(new Pose2d(8, -60, Math.toRadians(90)));
