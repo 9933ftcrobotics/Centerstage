@@ -310,7 +310,7 @@ else
                 if(gamepad1.dpad_up | gamepad2.dpad_up)
                 {
 
-                    ArmUpDown.setTargetPosition(1300);
+                    ArmUpDown.setTargetPosition(1500);
                     LTrigger = 0.3;
                     if( ArmUpDown.getTargetPosition() > 300)
                     {
