@@ -240,7 +240,8 @@ public class BlueLeftAutoWithRoad extends LinearOpMode {
                 )
 
                 .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
-                .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))
+                .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
+                //.lineTo(new Vector2d(48, 15))//Park Middle
                 .build();
 
         drive.followTrajectorySequence(Final);
