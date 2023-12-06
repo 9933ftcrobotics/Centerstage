@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
 @Autonomous(group = "ParkBotRedRight")
-
+@Disabled
 public class ParkBotRedRight extends LinearOpMode {
     private Servo RightClaw;
     private Servo LeftClaw;

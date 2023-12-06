@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 
 @Autonomous(group = "JudgeTest")
-
+@Disabled
 public class JudgeTest extends LinearOpMode {
     private DcMotor ArmUpDown;
 

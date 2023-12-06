@@ -65,11 +65,11 @@ public class BlueLeftAutoWithRoad extends LinearOpMode {
 
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
-        sleep(500);
+        sleep(1000);
         ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
         sleep(500);
 
-        if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
+        /*if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
 
             //Marker Left
 
@@ -77,129 +77,104 @@ public class BlueLeftAutoWithRoad extends LinearOpMode {
             telemetry.update();
 
             drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
-            TrajectorySequence PartOne = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
+            TrajectorySequence LeftSpike = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
+
                     .lineToSplineHeading(new Pose2d(15, 35, Math.toRadians(-45)))
-                    .build();
 
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
+                    )
 
-            drive.followTrajectorySequence(PartOne);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            RightClaw.setPosition(ArmAndClawPosition.RightClawOpen)
+                    )
 
-            ArmUpDown.setTargetPosition(0);
-            sleep(500);
-            RightClaw.setPosition(0);
-            sleep(500);
-            ArmUpDown.setTargetPosition(150);
-            sleep(250);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                    )
 
-            drive.setPoseEstimate(new Pose2d(15, 35, Math.toRadians(-45)));
-            TrajectorySequence PartTwo = drive.trajectorySequenceBuilder(new Pose2d(15, 35, Math.toRadians(-45)))
-                    .back(3)
+                    .back(5)
                     .turn(Math.toRadians(-45))
-                    .back(15)
-                    .lineToSplineHeading(new Pose2d(40, 28, Math.toRadians(0)))
+                    .back(12)
+                    .lineToSplineHeading(new Pose2d(40, 33, Math.toRadians(0)))
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(400)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(500)
+                    )
+
+                    .forward(7)
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                    )
+
+                    .back(3)
+                    .lineToSplineHeading(new Pose2d(42, 31, Math.toRadians(-90)))
                     .build();
 
-            drive.followTrajectorySequence(PartTwo);
+            drive.followTrajectorySequence(LeftSpike);
 
-            ArmUpDown.setTargetPosition(340);
-            ArmInOut.setTargetPosition(400);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(46, 28, Math.toRadians(0)));
-            TrajectorySequence PartThree = drive.trajectorySequenceBuilder(new Pose2d(46, 28, Math.toRadians(0)))
-                    .forward(8)
-                    .build();
-
-            drive.followTrajectorySequence(PartThree);
-
-            LeftClaw.setPosition(0);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(50, 28, Math.toRadians(0)));
-            TrajectorySequence PartFour = drive.trajectorySequenceBuilder(new Pose2d(50, 28, Math.toRadians(0)))
-                    .back(8)
-                    .turn(Math.toRadians(-90))
-                    .build();
-
-            drive.followTrajectorySequence(PartFour);
-
-            ArmInOut.setTargetPosition(0);
-            sleep(300);
-            ArmUpDown.setTargetPosition(150);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(45, 28, Math.toRadians(-90)));
-            TrajectorySequence PartFive = drive.trajectorySequenceBuilder(new Pose2d(45, 28, Math.toRadians(-90)))
-                    .back(20)
-                    .strafeLeft(18)
-                    .build();
-            drive.followTrajectorySequence(PartFive);
-
-        } else if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
+        //} else if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
 
             //Marker Right
 
-            telemetry.addLine("Left Spike Mark!");
+            telemetry.addLine("Right Spike Mark!");
             telemetry.update();
 
             drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
-            TrajectorySequence PartOne = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(18.5, 37, Math.toRadians(-45)))
-                    .build();
+            TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
 
-
-            drive.followTrajectorySequence(PartOne);
-
-            ArmUpDown.setTargetPosition(0);
-            sleep(500);
-            RightClaw.setPosition(0);
-            sleep(500);
-            ArmUpDown.setTargetPosition(150);
-            sleep(250);
-
-            drive.setPoseEstimate(new Pose2d(18.5, 37, Math.toRadians(-45)));
-            TrajectorySequence PartTwo = drive.trajectorySequenceBuilder(new Pose2d(18.5, 37, Math.toRadians(-45)))
-                    .back(8)
-                    .turn(Math.toRadians(45))
-                    .lineToSplineHeading(new Pose2d(46, 28, Math.toRadians(0)))
-                    .build();
-
-            drive.followTrajectorySequence(PartTwo);
-
-            ArmUpDown.setTargetPosition(340);
-            ArmInOut.setTargetPosition(400);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(46, 28, Math.toRadians(0)));
-            TrajectorySequence PartThree = drive.trajectorySequenceBuilder(new Pose2d(46, 28, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(14, 37, Math.toRadians(-135)))
                     .forward(4)
+
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            RightClaw.setPosition(ArmAndClawPosition.RightClawOpen)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                    )
+
+                    .back(12)
+                    .lineToSplineHeading(new Pose2d(40, 20, Math.toRadians(0)))
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(400)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(500)
+                    )
+
+                    .forward(7)
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                    )
+
+                    .back(3)
+                    .lineToSplineHeading(new Pose2d(42, 31, Math.toRadians(-90)))
                     .build();
-
-            drive.followTrajectorySequence(PartThree);
-
-            LeftClaw.setPosition(0);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(50, 28, Math.toRadians(0)));
-            TrajectorySequence PartFour = drive.trajectorySequenceBuilder(new Pose2d(50, 28, Math.toRadians(0)))
-                    .back(8)
-                    .turn(Math.toRadians(-90))
-                    .build();
-
-            drive.followTrajectorySequence(PartFour);
-
-            ArmInOut.setTargetPosition(0);
-            sleep(300);
-            ArmUpDown.setTargetPosition(150);
-            sleep(200);
-
-            drive.setPoseEstimate(new Pose2d(45, 28, Math.toRadians(-90)));
-            TrajectorySequence PartFive = drive.trajectorySequenceBuilder(new Pose2d(45, 28, Math.toRadians(-90)))
-                    .back(28)
-                    .strafeLeft(18)
-                    .build();
-            drive.followTrajectorySequence(PartFive);
-        } else {
+            drive.followTrajectorySequence(RightSpike);*/
+        //} else {
 
             //Marker Middle
 
@@ -208,62 +183,67 @@ public class BlueLeftAutoWithRoad extends LinearOpMode {
 
 
             drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
-            TrajectorySequence PartOne = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
-                    .forward(27)
-                    .build();
+            TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
+                    .forward(29)
 
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
+                    )
 
-            drive.followTrajectorySequence(PartOne);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            RightClaw.setPosition(ArmAndClawPosition.RightClawOpen)
+                    )
 
-            ArmUpDown.setTargetPosition(0);
-            sleep(500);
-            RightClaw.setPosition(0);
-            sleep(500);
-            ArmUpDown.setTargetPosition(150);
-            sleep(250);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                    )
 
-            drive.setPoseEstimate(new Pose2d(14.5, 34, Math.toRadians(-90)));
-            TrajectorySequence PartTwo = drive.trajectorySequenceBuilder(new Pose2d(14.5, 34, Math.toRadians(-90)))
                     .back(10)
-                    .lineToSplineHeading(new Pose2d(46, 35, Math.toRadians(0)))
-                    .build();
+                    .lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
-            drive.followTrajectorySequence(PartTwo);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(400)
+                    )
 
-            ArmUpDown.setTargetPosition(340);
-            ArmInOut.setTargetPosition(400);
-            sleep(200);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(500)
+                    )
 
-            drive.setPoseEstimate(new Pose2d(46, 35, Math.toRadians(0)));
-            TrajectorySequence PartThree = drive.trajectorySequenceBuilder(new Pose2d(46, 35, Math.toRadians(0)))
-                    .forward(4)
-                    .build();
+                    .lineToSplineHeading(new Pose2d(47, 29, Math.toRadians(0)))
 
-            drive.followTrajectorySequence(PartThree);
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                    )
 
-            LeftClaw.setPosition(0);
-            sleep(200);
+                    .back(4)
+                    .lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
+                            .build();
 
-            drive.setPoseEstimate(new Pose2d(50, 35, Math.toRadians(0)));
-            TrajectorySequence PartFour = drive.trajectorySequenceBuilder(new Pose2d(50, 35, Math.toRadians(0)))
-                    .back(5)
-                    .turn(Math.toRadians(90))
-                    .build();
+            drive.followTrajectorySequence(MiddleSpike);
+        //}
+        drive.setPoseEstimate(new Pose2d(40, 28, Math.toRadians(0)));
+        TrajectorySequence Final = drive.trajectorySequenceBuilder(new Pose2d(40, 28, Math.toRadians(0)))
 
-            drive.followTrajectorySequence(PartFour);
+                .waitSeconds(0.5)
+                .addTemporalMarker(() ->
+                        ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
+                )
 
-            ArmInOut.setTargetPosition(0);
-            sleep(300);
-            ArmUpDown.setTargetPosition(150);
-            sleep(200);
+                .waitSeconds(0.5)
+                .addTemporalMarker(() ->
+                        ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                )
 
-            drive.setPoseEstimate(new Pose2d(45, 35, Math.toRadians(-90)));
-            TrajectorySequence PartFive = drive.trajectorySequenceBuilder(new Pose2d(45, 35, Math.toRadians(-90)))
-                    .back(24)
-                    .strafeLeft(18)
-                    .build();
-            drive.followTrajectorySequence(PartFive);
-        }
+                .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
+                .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))
+                .build();
+
+        drive.followTrajectorySequence(Final);
 
 
         /*sleep(2000);
