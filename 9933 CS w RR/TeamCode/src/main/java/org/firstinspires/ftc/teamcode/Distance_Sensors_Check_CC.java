@@ -37,11 +37,11 @@ public class Distance_Sensors_Check_CC extends LinearOpMode {
 
             while (opModeIsActive()) {
 
-                if(LeftDistance.getDistance(DistanceUnit.CM) < 110)
+                if(RightDistance.getDistance(DistanceUnit.CM) < 50)
                 {
                     Spike = "Right Spike";
                 }
-                else if(RightDistance.getDistance(DistanceUnit.CM) < 120)
+                else if(LeftDistance.getDistance(DistanceUnit.CM) < 50)
                 {
                     Spike = "Left Spike";
                 }
