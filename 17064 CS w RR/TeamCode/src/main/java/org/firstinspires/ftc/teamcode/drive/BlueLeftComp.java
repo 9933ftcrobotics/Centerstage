@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -20,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 /*
  * This is an example of a more complex path to really test the tuning.
  */
-@Autonomous(group = "BlueRightAutoWithRoad")
-@Disabled
-public class BlueRightAutoWithRoad extends LinearOpMode {
+@Autonomous(group = "BlueLeft")
+
+public class BlueLeftComp extends LinearOpMode {
 
     private DcMotor ArmUpDown;
     private DcMotor ArmInOut;
@@ -66,21 +65,27 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
 
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
-        sleep(500);
-        ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
+        sleep(1000);
+        ArmUpDown.setTargetPosition(130);
         sleep(500);
 
-        /* if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
+        drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
+        TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(12.5, 47, Math.toRadians(-90)))
+                .build();
+        drive.followTrajectorySequence(Start);
+
+        if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
 
             //Marker Left
 
             telemetry.addLine("Left Spike Mark!");
             telemetry.update();
 
-            drive.setPoseEstimate(new Pose2d(-37, 61, Math.toRadians(-90)));
-            TrajectorySequence LeftSpike = drive.trajectorySequenceBuilder(new Pose2d(-37, 61, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-37, 40, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-28, 35, Math.toRadians(-45)))
+            drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
+            TrajectorySequence LeftSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
+
+                    .lineToSplineHeading(new Pose2d(16, 38, Math.toRadians(-45)))
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -96,56 +101,63 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .lineToSplineHeading(new Pose2d(-48, 42, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-48, 13, Math.toRadians(0)))
-                    .lineToSplineHeading(new Pose2d(10, 13, Math.toRadians(0)))
-                    .lineToSplineHeading(new Pose2d(44, 41, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(12, 57, Math.toRadians(-90)))
+                    .lineToLinearHeading(new Pose2d(24, 57, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(40, 35, Math.toRadians(0)))
 
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(400)
                     )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(400)
+                            ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineTo(new Vector2d(48, 41))
+                    .forward(7.8)
 
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(350)
+                    )
 
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
                     )
 
+                    .back(6)
+                    //.lineToSplineHeading(new Pose2d(42, 31, Math.toRadians(-90)))
                     .waitSeconds(0.5)
-                    .lineTo(new Vector2d(44, 41))
-                    .lineToSplineHeading(new Pose2d(44, 15, Math.toRadians(-90)))
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
+                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .waitSeconds(0.5)
-                    .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
-                    )
-
-                    .lineTo(new Vector2d(48, 15))//Park Middle
-                    //.lineToSplineHeading(new Pose2d(49, 58, Math.toRadians(-90))) //Park Corner
+                    .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
+                    //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
                     .build();
+
             drive.followTrajectorySequence(LeftSpike);
 
-        } else if (LeftDistance.getDistance(DistanceUnit.CM) < 100) {
+            } else if (RightDistance.getDistance(DistanceUnit.CM) < 100) {
 
             //Marker Right
 
             telemetry.addLine("Right Spike Mark!");
             telemetry.update();
 
-            drive.setPoseEstimate(new Pose2d(-37, 61, Math.toRadians(-90)));
-            TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(-37, 61, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-39, 40, Math.toRadians(-135)))
+            drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
+            TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
+
+                    .lineToSplineHeading(new Pose2d(11, 39, Math.toRadians(-135)))
+                    //.forward(3)
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -161,11 +173,8 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .lineToSplineHeading(new Pose2d(-34, 50, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-34, 13, Math.toRadians(-90)))
-                    .turn(Math.toRadians(90))
-                    .lineToSplineHeading(new Pose2d(10, 13, Math.toRadians(0)))
-                    .lineToSplineHeading(new Pose2d(44, 28, Math.toRadians(0)))
+                    .back(12)
+                    .lineToSplineHeading(new Pose2d(40, 20, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -174,34 +183,40 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(400)
+                            ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineTo(new Vector2d(48, 28))
+                    .forward(7.5)
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(350)
+                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
                     )
 
-                    .lineTo(new Vector2d(44, 28))
+                    .back(3)
+                    .lineToSplineHeading(new Pose2d(42, 31, Math.toRadians(-90)))
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
+                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .waitSeconds(0.5)
-                    .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
-                    )
+                    .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
+                    //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
 
-                    .lineToSplineHeading(new Pose2d(44, 15, Math.toRadians(-90)))
-                    .lineTo(new Vector2d(48, 15))//Park Middle
-                    //.lineToSplineHeading(new Pose2d(49, 58, Math.toRadians(-90))) //Park Corner
                     .build();
             drive.followTrajectorySequence(RightSpike);
-        } else {*/
+        } else {
 
             //Marker Middle
 
@@ -209,10 +224,10 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
             telemetry.update();
 
 
-            drive.setPoseEstimate(new Pose2d(-37, 61, Math.toRadians(-90)));
-            TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(-37, 61, Math.toRadians(-90)))
-                    //.lineTo(new Vector2d(-37, 32))
-                    .lineToSplineHeading(new Pose2d(-37, 32, Math.toRadians(-90)))
+            drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
+            TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
+                    .lineToLinearHeading(new Pose2d(13.5, 32, Math.toRadians(-90)))
+
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
                     )
@@ -227,52 +242,48 @@ public class BlueRightAutoWithRoad extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .lineToSplineHeading(new Pose2d(-55, 38, Math.toRadians(-90)))
-                    //.lineTo(new Vector2d(-55, 38))
-                    .lineToSplineHeading(new Pose2d(-50, 10, Math.toRadians(-90)))
-                    //.lineTo(new Vector2d(-50, 9))
-                    .turn(Math.toRadians(90))
-                    .lineToSplineHeading(new Pose2d(10, 10, Math.toRadians(0)))
-                    //.lineTo(new Vector2d(10, 10))
-                    .lineToSplineHeading(new Pose2d(44, 31, Math.toRadians(0)))
-                    //.lineTo(new Vector2d(44, 34))
+                    .back(10)
+                    .lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
-
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(400)
+                            ArmUpDown.setTargetPosition(350)
                     )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(400)
+                            ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineTo(new Vector2d(47, 31))
+                    .lineToSplineHeading(new Pose2d(47, 29, Math.toRadians(0)))
 
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
                     )
 
-                    .waitSeconds(1)
-                    .lineTo(new Vector2d(45, 35))
-
-                    .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
-                    )
+                    .back(4)
+                    .lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))
-                    //.lineTo(new Vector2d(48, 15))//Park Middle
-                    //.lineToSplineHeading(new Pose2d(49, 58, Math.toRadians(-90))) //Park Corner
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                    )
+
+                    .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
+                    //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
+
                     .build();
+
             drive.followTrajectorySequence(MiddleSpike);
-        //}
+            }
+        }
+
 
     }
-
-
-}

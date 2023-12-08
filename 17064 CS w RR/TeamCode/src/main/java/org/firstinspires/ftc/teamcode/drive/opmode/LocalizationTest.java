@@ -16,15 +16,27 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  * encoder localizer heading may be significantly off if the track width has not been tuned).
  */
 @TeleOp(group = "drive")
-@Disabled
+
 public class LocalizationTest extends LinearOpMode {
+
+    private DcMotor ArmUpDown;
     @Override
     public void runOpMode() throws InterruptedException {
+
+        ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+
+        ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmUpDown.setTargetPosition(0);
+        ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ArmUpDown.setPower(1);
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
+
+        ArmUpDown.setTargetPosition(200);
 
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(

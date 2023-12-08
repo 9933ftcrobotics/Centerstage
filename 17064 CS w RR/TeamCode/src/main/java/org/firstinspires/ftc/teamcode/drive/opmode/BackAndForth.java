@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -27,13 +28,23 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Config
 @Autonomous(group = "drive")
-@Disabled
-public class BackAndForth extends LinearOpMode {
 
+public class BackAndForth extends LinearOpMode {
+    private DcMotor ArmUpDown;
     public static double DISTANCE = 50;
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+
+        ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmUpDown.setTargetPosition(0);
+        ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ArmUpDown.setPower(1);
+
+        ArmUpDown.setTargetPosition(200);
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
