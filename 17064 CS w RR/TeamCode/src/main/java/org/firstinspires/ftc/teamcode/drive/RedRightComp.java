@@ -116,7 +116,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToSplineHeading(new Pose2d(47, -26, Math.toRadians(0))) // On Backdrop
+                    .lineToSplineHeading(new Pose2d(48, -26, Math.toRadians(0))) // On Backdrop
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -136,8 +136,8 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48, -59, Math.toRadians(90))) // Park Low
-                    //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
+                    //.lineToLinearHeading(new Pose2d(48, -59, Math.toRadians(90))) // Park Low
+                    .lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
 
                     .build();
 
@@ -182,7 +182,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(47, -39, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(48, -39, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -201,8 +201,8 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    .lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90)))//Park Low
-                    //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90)))//Park Middle
+                    //.lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90)))//Park Low
+                    .lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90)))//Park Middle
 
                     .build();
             drive.followTrajectorySequence(RightSpike);
@@ -265,8 +265,8 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    .lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90))) //Park Low
-                    //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
+                    //.lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90))) //Park Low
+                    .lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
                     .build();
             drive.followTrajectorySequence(MiddleSpike);
         }

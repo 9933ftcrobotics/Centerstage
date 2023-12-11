@@ -16,7 +16,7 @@ public class ArmAndClawPosition {
 
     public Servo LeftClaw;
 
-    public static final double RightClawClosed = 0.27;
+    public static final double RightClawClosed = 0.3;
     public static final double LeftClawClosed = 0.3;
 
     public static final double RightClawOpen = 0;

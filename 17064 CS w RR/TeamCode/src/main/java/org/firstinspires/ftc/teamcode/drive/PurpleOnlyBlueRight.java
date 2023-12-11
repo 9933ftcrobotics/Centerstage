@@ -65,7 +65,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
-        sleep(500);
+        sleep(1000);
         ArmUpDown.setTargetPosition(180);
         sleep(1000);
 
@@ -185,7 +185,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48.5, 32, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(49, 32, Math.toRadians(0)))
 
 
                     .addTemporalMarker(() ->
@@ -222,7 +222,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-36, 47, Math.toRadians(-90)));
             TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, 47, Math.toRadians(-90)))
                     //.lineTo(new Vector2d(-37, 32))
-                    .lineToSplineHeading(new Pose2d(-37, 32, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-39, 34, Math.toRadians(-90)))
 
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)

@@ -402,7 +402,7 @@ else
 
 
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownHigh);
-                    LTrigger = slow;
+                    normal = 0.7;
 
 
                     if( ArmUpDown.getTargetPosition() > 300)
@@ -422,7 +422,7 @@ else
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutLow);
 
 
-                    LTrigger = slow;
+                    normal = 0.7;
 
 
                 }
@@ -436,20 +436,20 @@ else
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
 
 
-                    LTrigger = slow;
+                    normal = 0.7;
 
 
                 } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
-                    LTrigger = slow;
+                    normal = 0.7;
                 }
                 else
                 {
 
 
-                    LTrigger = 0.7;
+                    normal = 0.7;
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {

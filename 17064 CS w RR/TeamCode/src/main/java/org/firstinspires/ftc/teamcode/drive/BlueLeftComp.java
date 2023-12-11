@@ -66,12 +66,12 @@ public class BlueLeftComp extends LinearOpMode {
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
         sleep(1000);
-        ArmUpDown.setTargetPosition(130);
+        ArmUpDown.setTargetPosition(100);
         sleep(500);
 
         drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
         TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(12.5, 47, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(11.5, 47, Math.toRadians(-90)))
                 .build();
         drive.followTrajectorySequence(Start);
 
@@ -85,7 +85,7 @@ public class BlueLeftComp extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
             TrajectorySequence LeftSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
 
-                    .lineToSplineHeading(new Pose2d(16, 38, Math.toRadians(-45)))
+                    .lineToSplineHeading(new Pose2d(17, 41, Math.toRadians(-45)))
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -115,7 +115,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .forward(7.8)
+                    .lineToLinearHeading(new Pose2d(48, 35, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -156,7 +156,7 @@ public class BlueLeftComp extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
             TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
 
-                    .lineToSplineHeading(new Pose2d(11, 39, Math.toRadians(-135)))
+                    .lineToSplineHeading(new Pose2d(13, 39, Math.toRadians(-135)))
                     //.forward(3)
 
                     .addTemporalMarker(() ->
@@ -186,7 +186,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .forward(7.5)
+                    .lineToLinearHeading(new Pose2d(49.5, 20, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -247,7 +247,7 @@ public class BlueLeftComp extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(350)
+                            ArmUpDown.setTargetPosition(400)
                     )
 
                     .waitSeconds(0.5)
@@ -255,7 +255,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToSplineHeading(new Pose2d(47, 29, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(49.5, 29, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
