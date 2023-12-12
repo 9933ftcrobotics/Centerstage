@@ -71,6 +71,10 @@ public class BlueRight_COMP extends LinearOpMode {
 
         TrajectorySequence traj2 = drive.trajectorySequenceBuilder(new Pose2d(-35.25,52.25, Math.toRadians(-90)))
                 .lineToLinearHeading(new Pose2d(-35.25, 37, Math.toRadians(-90)))
+                .addTemporalMarker(() ->
+                        LeftClaw.setPosition(0.3)
+                )
+                .waitSeconds(2)
                 .build();
 
         drive.followTrajectorySequence(traj1);
