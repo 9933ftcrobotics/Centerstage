@@ -67,7 +67,7 @@ public class RedRightComp extends LinearOpMode {
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
         sleep(1000);
-        ArmUpDown.setTargetPosition(130);
+        ArmUpDown.setTargetPosition(100);
         sleep(500);
 
         drive.setPoseEstimate(new Pose2d(14.5, -61, Math.toRadians(90)));
@@ -104,26 +104,26 @@ public class RedRightComp extends LinearOpMode {
 
                     .lineToLinearHeading(new Pose2d(13, -52, Math.toRadians(90)))
                     //.back(10)
-                    .lineToSplineHeading(new Pose2d(40, -26, Math.toRadians(0))) // To BackDrop
+                    .lineToSplineHeading(new Pose2d(32, -26, Math.toRadians(0))) // To BackDrop
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(400)
+                            ArmUpDown.setTargetPosition(380)
                     )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(400)
+                            ArmInOut.setTargetPosition(1560)
                     )
 
-                    .lineToSplineHeading(new Pose2d(48, -26, Math.toRadians(0))) // On Backdrop
+                    .lineToSplineHeading(new Pose2d(36, -26, Math.toRadians(0))) // On Backdrop
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
                     )
 
-                    .lineToLinearHeading(new Pose2d(40, -30, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(30, -30, Math.toRadians(0)))
                     //.lineToSplineHeading(new Pose2d(40, -30, Math.toRadians(90)))
 
                     .waitSeconds(0.5)

@@ -77,7 +77,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double LeftClawPositionClosed = 0.27;
     double LTrigger = 0;
     int Count = 0;
-    boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
+    boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped, Climbed;
 
 
     boolean OverRide = false;
@@ -120,7 +120,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        ClimberRight.setDirection(DcMotor.Direction.REVERSE);
+      //  ClimberRight.setDirection(DcMotor.Direction.REVERSE);
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
         ClimberRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -143,7 +143,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
         //LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.REVERSE);
-        DroneLauncher.setDirection(Servo.Direction.REVERSE);
+        //DroneLauncher.setDirection(Servo.Direction.REVERSE);
 
 
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -530,8 +530,14 @@ else
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(2400);
-                    ClimberRight.setTargetPosition(2400);
+                    ClimberLeft.setTargetPosition(4900);
+                    ClimberRight.setTargetPosition(4900);
+                    Climbed = true;
+                }
+                else if(Climbed)
+                {
+                    ClimberLeft.setTargetPosition(2000);
+                    ClimberRight.setTargetPosition(2000);
                 }
                 else
                 {
@@ -544,6 +550,7 @@ else
                 {
                     ClimberLeft.setTargetPosition(0);
                     ClimberRight.setTargetPosition(0);
+                    Climbed = false;
                 }
 
 

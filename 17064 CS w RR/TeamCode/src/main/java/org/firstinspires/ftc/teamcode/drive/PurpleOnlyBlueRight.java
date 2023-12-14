@@ -66,7 +66,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
         sleep(1000);
-        ArmUpDown.setTargetPosition(180);
+        ArmUpDown.setTargetPosition(100);
         sleep(1000);
 
         drive.setPoseEstimate(new Pose2d(-38, 61, Math.toRadians(-90)));
@@ -87,7 +87,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-36, 47, Math.toRadians(-90)));
             TrajectorySequence LeftSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, 47, Math.toRadians(-90)))
                     //.lineTo(new Vector2d(-37, 32))
-                    .lineToSplineHeading(new Pose2d(-36, 39, Math.toRadians(-135)))
+                    .lineToSplineHeading(new Pose2d(-38, 39, Math.toRadians(-135)))
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
                     )*/
@@ -123,7 +123,17 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(350)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
                     .lineToLinearHeading(new Pose2d(44, 28, Math.toRadians(0)))
@@ -131,11 +141,6 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
-                    )
-
-                    .waitSeconds(0.5)
-                    .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
                     .lineToSplineHeading(new Pose2d(44, 15, Math.toRadians(-90)))
@@ -154,7 +159,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
             drive.setPoseEstimate(new Pose2d(-36, 47, Math.toRadians(-90)));
             TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, 47, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-34, 40, Math.toRadians(-45)))
+                    .lineToSplineHeading(new Pose2d(-32, 40, Math.toRadians(-45)))
 
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -174,7 +179,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .lineToSplineHeading(new Pose2d(-48, 42, Math.toRadians(-90)))
                     .lineToSplineHeading(new Pose2d(-48, 7, Math.toRadians(0)))
                     .lineToSplineHeading(new Pose2d(30, 7, Math.toRadians(0)))
-                    .lineToSplineHeading(new Pose2d(44, 32, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(44, 35, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(400)
@@ -185,7 +190,12 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(49, 32, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(48.5, 35, Math.toRadians(0)))
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(350)
+                    )
 
 
                     .addTemporalMarker(() ->
@@ -194,7 +204,6 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .lineToLinearHeading(new Pose2d(44, 33, Math.toRadians(0)))
-                    .lineToSplineHeading(new Pose2d(44, 15, Math.toRadians(-90)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -205,6 +214,9 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
+
+                    .lineToSplineHeading(new Pose2d(44, 15, Math.toRadians(-90)))
+
 
                     .lineToLinearHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
                     //.lineToSplineHeading(new Pose2d(49, 58, Math.toRadians(-90))) //Park Corner
@@ -222,7 +234,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(-36, 47, Math.toRadians(-90)));
             TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, 47, Math.toRadians(-90)))
                     //.lineTo(new Vector2d(-37, 32))
-                    .lineToSplineHeading(new Pose2d(-39, 34, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-39, 32, Math.toRadians(-90)))
 
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -241,7 +253,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .lineToLinearHeading(new Pose2d(-36, 47, Math.toRadians(-90)))
                     .lineToSplineHeading(new Pose2d(-55, 38, Math.toRadians(-90)))
                     //.lineTo(new Vector2d(-55, 38))
-                    .lineToSplineHeading(new Pose2d(-50, 7, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-50, 9, Math.toRadians(-90)))
                     //.lineTo(new Vector2d(-50, 9))
                     .turn(Math.toRadians(90))
                     .lineToSplineHeading(new Pose2d(30, 7, Math.toRadians(0)))
@@ -257,7 +269,11 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48.5, 26, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(48, 26, Math.toRadians(0)))
+
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(330)
+                    )
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)

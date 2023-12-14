@@ -103,7 +103,7 @@ public class BlueLeftComp extends LinearOpMode {
 
                     .lineToLinearHeading(new Pose2d(12, 57, Math.toRadians(-90)))
                     .lineToLinearHeading(new Pose2d(24, 57, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(40, 35, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(40, 36, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -115,7 +115,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48, 35, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(48.5, 36, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -256,6 +256,11 @@ public class BlueLeftComp extends LinearOpMode {
                     )
 
                     .lineToSplineHeading(new Pose2d(49.5, 29, Math.toRadians(0)))
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(350)
+                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
