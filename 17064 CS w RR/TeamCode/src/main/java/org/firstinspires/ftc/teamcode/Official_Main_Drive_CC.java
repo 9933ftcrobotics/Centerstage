@@ -536,8 +536,8 @@ else
                 }
                 else if(Climbed)
                 {
-                    ClimberLeft.setTargetPosition(2000);
-                    ClimberRight.setTargetPosition(2000);
+                    ClimberLeft.setTargetPosition(1750);
+                    ClimberRight.setTargetPosition(1750);
                 }
                 else
                 {
