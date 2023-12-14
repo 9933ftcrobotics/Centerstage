@@ -38,6 +38,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     private Servo LeftClaw;
     private Servo RightClaw;
     private Servo DroneLauncher;
+    private Servo Wrist;
   /*private DcMotor RightMotor;
   private DcMotor LeftMotor;*/
 
@@ -65,7 +66,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double LTrigger = 0;
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
-
+    boolean Climbed;
     @Override
     public void runOpMode () {
 
@@ -81,6 +82,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         LeftClaw = hardwareMap.get(Servo.class, "LeftClaw");
         RightClaw = hardwareMap.get(Servo.class, "RightClaw");
         DroneLauncher = hardwareMap.get(Servo.class, "DroneLauncher");
+        Wrist = hardwareMap.get(Servo.class, "Wrist");
 
 
         ClimberLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -316,6 +318,7 @@ else
                     {
 
                         ArmInOut.setTargetPosition(1500);
+                        Wrist.setPosition(1);
                     }
 
                 }
@@ -407,8 +410,14 @@ else
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(2075);
-                    ClimberRight.setTargetPosition(2075);
+                    ClimberLeft.setTargetPosition(1500);
+                    ClimberRight.setTargetPosition(1500);
+                    Climbed = true;
+                }
+                else if(Climbed)
+                {
+                    ClimberLeft.setTargetPosition(500);
+                    ClimberRight.setTargetPosition(500);
                 }
                 else
                 {
@@ -418,8 +427,7 @@ else
 
                 if(gamepad1.left_stick_button | gamepad2.left_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(-100);
-                    ClimberRight.setTargetPosition(-100);
+                    Climbed = false;
                 }
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
