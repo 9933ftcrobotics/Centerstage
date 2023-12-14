@@ -402,7 +402,7 @@ else
 
 
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownHigh);
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                     if( ArmUpDown.getTargetPosition() > 300)
@@ -422,7 +422,7 @@ else
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutLow);
 
 
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                 }
@@ -436,14 +436,14 @@ else
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
 
 
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                 } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
-                    normal = 0.7;
+                    LTrigger = slow;
                 }
                 else
                 {
@@ -556,7 +556,7 @@ else
 
                 if (gamepad2.y) {
                     slow = 0.7; //Override.
-                } else if (!gamepad2.y) {
+                } else {
                     slow = 0.3; //Slow speed
                 }
 
