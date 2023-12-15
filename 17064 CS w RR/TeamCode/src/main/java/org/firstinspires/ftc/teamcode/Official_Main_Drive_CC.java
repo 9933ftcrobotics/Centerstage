@@ -77,7 +77,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double LeftClawPositionClosed = 0.27;
     double LTrigger = 0;
     int Count = 0;
-    boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped;
+    boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped, Climbed;
 
 
     boolean OverRide = false;
@@ -120,7 +120,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         ClimberLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        ClimberRight.setDirection(DcMotor.Direction.REVERSE);
+      //  ClimberRight.setDirection(DcMotor.Direction.REVERSE);
         ClimberRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ClimberRight.setTargetPosition(0);
         ClimberRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -143,7 +143,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
         //LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.REVERSE);
-        DroneLauncher.setDirection(Servo.Direction.REVERSE);
+        //DroneLauncher.setDirection(Servo.Direction.REVERSE);
 
 
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -402,7 +402,7 @@ else
 
 
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownHigh);
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                     if( ArmUpDown.getTargetPosition() > 300)
@@ -422,7 +422,7 @@ else
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutLow);
 
 
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                 }
@@ -436,14 +436,14 @@ else
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
 
 
-                    normal = 0.7;
+                    LTrigger = slow;
 
 
                 } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
-                    normal = 0.7;
+                    LTrigger = slow;
                 }
                 else
                 {
@@ -530,8 +530,14 @@ else
 
                 if(gamepad1.right_stick_button | gamepad2.right_stick_button)
                 {
-                    ClimberLeft.setTargetPosition(2400);
-                    ClimberRight.setTargetPosition(2400);
+                    ClimberLeft.setTargetPosition(4900);
+                    ClimberRight.setTargetPosition(4900);
+                    Climbed = true;
+                }
+                else if(Climbed)
+                {
+                    ClimberLeft.setTargetPosition(1750);
+                    ClimberRight.setTargetPosition(1750);
                 }
                 else
                 {
@@ -544,12 +550,13 @@ else
                 {
                     ClimberLeft.setTargetPosition(0);
                     ClimberRight.setTargetPosition(0);
+                    Climbed = false;
                 }
 
 
                 if (gamepad2.y) {
                     slow = 0.7; //Override.
-                } else if (!gamepad2.y) {
+                } else {
                     slow = 0.3; //Slow speed
                 }
 

@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * This is an example of a more complex path to really test the tuning.
  */
 @Autonomous(group = "drive")
-@Disabled
+//@Disabled
 public class DemoAuto extends LinearOpMode {
 
     private DcMotor ArmUpDown;
@@ -75,7 +75,7 @@ public class DemoAuto extends LinearOpMode {
 
 
         drive.followTrajectorySequence(toLine);
-        LeftClaw.setPosition(0);
+        /*LeftClaw.setPosition(0);
         sleep(500);
         drive.followTrajectorySequence(toBackdrop);
         RightClaw.setPosition(0);

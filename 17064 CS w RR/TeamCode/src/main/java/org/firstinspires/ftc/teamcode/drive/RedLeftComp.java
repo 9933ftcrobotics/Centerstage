@@ -67,12 +67,12 @@ public class RedLeftComp extends LinearOpMode {
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
         sleep(500);
-        ArmUpDown.setTargetPosition(150);
+        ArmUpDown.setTargetPosition(110);
         sleep(500);
 
         drive.setPoseEstimate(new Pose2d(-37, -61, Math.toRadians(90)));
         TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(-37, -61, Math.toRadians(90)))
-                .lineToLinearHeading(new Pose2d(-36, -47, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-34.5, -47, Math.toRadians(90)))
                 .build();
         drive.followTrajectorySequence(Start);
 
@@ -102,29 +102,30 @@ public class RedLeftComp extends LinearOpMode {
                     )
 
                     .lineToSplineHeading(new Pose2d(-34, -45, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(-34, -10, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(30, -10, Math.toRadians(90)))
+                    .lineToSplineHeading(new Pose2d(-34, -8, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(30, -8, Math.toRadians(0)))
                     .lineToLinearHeading(new Pose2d(44, -25, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(500)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(51, -30, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(50.5, -30, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            LeftClaw.setPosition(0)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(275)
                     )
 
                     .lineToLinearHeading(new Pose2d(42, -30, Math.toRadians(0)))
-
-                    .addTemporalMarker(() ->
-                            ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
-                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -168,22 +169,27 @@ public class RedLeftComp extends LinearOpMode {
                     )
 
                     .lineToSplineHeading(new Pose2d(-40, -40, Math.toRadians(45)))
-                    .lineToSplineHeading(new Pose2d(-40, -10, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(30, -10, Math.toRadians(90)))
+                    .lineToSplineHeading(new Pose2d(-40, -8, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(30, -8, Math.toRadians(0)))
                     .lineToLinearHeading(new Pose2d(44, -42, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(500)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(51, -42, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(50.5, -41, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            LeftClaw.setPosition(0)
+                    )
+
+                    .waitSeconds(0.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(275)
                     )
 
                     .lineToLinearHeading(new Pose2d(42, -42, Math.toRadians(0)))
@@ -211,7 +217,7 @@ public class RedLeftComp extends LinearOpMode {
 
             drive.setPoseEstimate(new Pose2d(-36, -47, Math.toRadians(90)));
             TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, -47, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(-37, -33, Math.toRadians(90)))
+                    .lineToSplineHeading(new Pose2d(-37, -32, Math.toRadians(90)))
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -228,34 +234,40 @@ public class RedLeftComp extends LinearOpMode {
                     )
 
                     .lineToLinearHeading(new Pose2d(-37, -38, Math.toRadians(90)))
-                    .lineToLinearHeading(new Pose2d(-49, -38, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(-49, -10, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(-34, -10, Math.toRadians(90)))
-                    .lineToSplineHeading(new Pose2d(30, -10, Math.toRadians(90)))
-                    .lineToLinearHeading(new Pose2d(44, -33, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(-52, -38, Math.toRadians(90)))
+                    .lineToSplineHeading(new Pose2d(-49, -7, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(-34, -7, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(30, -7, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(44, -31, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(450)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(51, -33, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(48, -31, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            LeftClaw.setPosition(0)
                     )
 
-                    .lineToLinearHeading(new Pose2d(42, -36, Math.toRadians(0)))
-
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
+                            ArmUpDown.setTargetPosition(275)
                     )
 
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
+                    )
+
+                    .waitSeconds(0.5)
+                    .lineToLinearHeading(new Pose2d(42, -31, Math.toRadians(0)))
+
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
                     .lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90)))//Park Middle
