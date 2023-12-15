@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous(group = "Drive")
 
 
-public class RedRight_COMP extends LinearOpMode {
+public class RedRight_COMP_FrontPark extends LinearOpMode {
     //@Override
 
     private Servo RightClaw;
@@ -65,7 +65,7 @@ public class RedRight_COMP extends LinearOpMode {
                         ArmUpDown.setTargetPosition(100)
                 )
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(12,-54,Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(11,-51.50,Math.toRadians(90)))
                 .waitSeconds(1)
                 .build();
 
@@ -74,12 +74,14 @@ public class RedRight_COMP extends LinearOpMode {
                 .addTemporalMarker(() ->
                         LeftClaw.setPosition(0.3)
                 )
-                .lineToLinearHeading(new Pose2d(42, -37, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(38, -37, Math.toRadians(180)))
                 .waitSeconds(1)
                 .addTemporalMarker(() ->
                         ArmUpDown.setTargetPosition(1600)
                 )
+
                 .waitSeconds(2)
+                .lineToLinearHeading(new Pose2d(47, -37, Math.toRadians(180)))
                 .addTemporalMarker(() ->
                         RightClaw.setPosition(0.2)
                 )
@@ -87,7 +89,8 @@ public class RedRight_COMP extends LinearOpMode {
                 .addTemporalMarker(() ->
                         ArmUpDown.setTargetPosition(50)
                 )
-                .lineToLinearHeading(new Pose2d(50, -60, Math.toRadians(90)))
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(45, -18, Math.toRadians(90)))
                 .build();
 
         drive.followTrajectorySequence(traj1);
@@ -96,14 +99,28 @@ public class RedRight_COMP extends LinearOpMode {
         {
             Spike = "Right Spike";
             traj2 = drive.trajectorySequenceBuilder(new Pose2d(12,-52.25, Math.toRadians(90)))
-                    .lineToLinearHeading(new Pose2d(12, -37, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(27, -40, Math.toRadians(90)))
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0.3)
                     )
                     .waitSeconds(2)
-                    .lineToLinearHeading(new Pose2d(10, -52.25, Math.toRadians(0)))
-
-                    .lineToLinearHeading(new Pose2d(50, -60, Math.toRadians(90)))
+                    .lineToLinearHeading(new Pose2d(38, -42.5, Math.toRadians(180)))
+                    .waitSeconds(1)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(1600)
+                    )
+                    .waitSeconds(2)
+                    .lineToLinearHeading(new Pose2d(47, -42.5, Math.toRadians(180)))
+                    .waitSeconds(1)
+                    .addTemporalMarker(() ->
+                            RightClaw.setPosition(0.2)
+                    )
+                    .waitSeconds(2.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(50)
+                    )
+                    .waitSeconds(1)
+                    .lineToLinearHeading(new Pose2d(50, -18, Math.toRadians(90)))
                     .build();
         }
         else if(LeftDistance.getDistance(DistanceUnit.CM) < 50)
@@ -115,7 +132,22 @@ public class RedRight_COMP extends LinearOpMode {
                             LeftClaw.setPosition(0.3)
                     )
                     .waitSeconds(2)
-                    .lineToLinearHeading(new Pose2d(50, -60, Math.toRadians(90)))
+                    .lineToLinearHeading(new Pose2d(38, -32, Math.toRadians(180)))
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(1600)
+                    )
+                    .waitSeconds(1)
+                    .lineToLinearHeading(new Pose2d(47, -31, Math.toRadians(180)))
+                    .waitSeconds(2)
+                    .addTemporalMarker(() ->
+                            RightClaw.setPosition(0.2)
+                    )
+                    .waitSeconds(2.5)
+                    .addTemporalMarker(() ->
+                            ArmUpDown.setTargetPosition(50)
+                    )
+                    .waitSeconds(1)
+                    .lineToLinearHeading(new Pose2d(47, -18, Math.toRadians(90)))
                     .build();
             /*traj1 = drive.trajectorySequenceBuilder(new Pose2d(12, 66, Math.toRadians(-90)))
                     .addTemporalMarker(() ->
