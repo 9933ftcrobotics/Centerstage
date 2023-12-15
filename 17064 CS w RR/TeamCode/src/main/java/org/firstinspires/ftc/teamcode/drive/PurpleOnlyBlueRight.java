@@ -104,14 +104,14 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
                     .lineToLinearHeading(new Pose2d(-36, 47, Math.toRadians(-90)))
                     .lineToSplineHeading(new Pose2d(-34, 50, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-34, 8, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-35, 8, Math.toRadians(-90)))
                     .turn(Math.toRadians(90))
                     .lineToSplineHeading(new Pose2d(30, 8, Math.toRadians(0)))
                     .lineToSplineHeading(new Pose2d(44, 21, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(400)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .waitSeconds(0.5)
@@ -119,24 +119,22 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48.5, 21, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(51, 22, Math.toRadians(0)))
 
-                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(350)
+                            LeftClaw.setPosition(0)
                     )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            ArmUpDown.setTargetPosition(275)
                     )
 
-                    .waitSeconds(0.5)
+                    .lineToLinearHeading(new Pose2d(44, 22, Math.toRadians(0)))
+
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
-
-                    .lineToLinearHeading(new Pose2d(44, 28, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -182,7 +180,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .lineToSplineHeading(new Pose2d(44, 35, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(400)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .waitSeconds(0.5)
@@ -190,16 +188,15 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48.5, 35, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(50.5, 35, Math.toRadians(0)))
+
+                    .addTemporalMarker(() ->
+                            LeftClaw.setPosition(0)
+                    )
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(350)
-                    )
-
-
-                    .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            ArmUpDown.setTargetPosition(275)
                     )
 
                     .waitSeconds(0.5)
@@ -261,7 +258,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .lineToSplineHeading(new Pose2d(44, 26, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(400)
+                            ArmUpDown.setTargetPosition(430)
                     )
 
                     .waitSeconds(0.5)
@@ -269,14 +266,15 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(48, 26, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(51, 26, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(330)
+                            LeftClaw.setPosition(0)
                     )
 
+                    .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            LeftClaw.setPosition(ArmAndClawPosition.LeftClawOpen)
+                            ArmUpDown.setTargetPosition(275)
                     )
 
                     .waitSeconds(1)
