@@ -143,7 +143,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
         //LeftClaw.setDirection(Servo.Direction.REVERSE);
         RightClaw.setDirection(Servo.Direction.REVERSE);
-        //DroneLauncher.setDirection(Servo.Direction.REVERSE);
+        DroneLauncher.setDirection(Servo.Direction.REVERSE);
 
 
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -444,12 +444,10 @@ else
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
                     LTrigger = slow;
-                }
-                else
-                {
-
+                } else {
 
                     normal = 0.7;
+                    LTrigger = normal;
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
@@ -484,7 +482,7 @@ else
                         LeftBumperIsPressed = true;
                     }
                 }
-
+//Test
 
                 if (LeftClawClamped == false)
                 {
@@ -554,14 +552,14 @@ else
                 }
 
 
-                if (gamepad2.y) {
+                /*if (gamepad2.y | gamepad1.y) {
                     slow = 0.7; //Override.
                 } else {
                     slow = 0.3; //Slow speed
-                }
+                }*/
 
                 //Change Max Speed
-                if (gamepad1.b && BisPressed == false || gamepad2.b && BisPressed == false) {
+                /*if (gamepad1.b && BisPressed == false || gamepad2.b && BisPressed == false) {
                     normal += 0.1;
                     BisPressed = true;
                 } else if (gamepad1.x && XisPressed == false || gamepad2.x && XisPressed == false) {
@@ -583,7 +581,11 @@ else
                     normal = 0;
                 }
 
+                LTrigger = normal;*/
+
+
                 LTrigger = normal;
+
 
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());

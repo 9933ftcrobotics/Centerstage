@@ -124,7 +124,7 @@ public class RedRightComp extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(325)
                     )
 
                     .waitSeconds(0.5)
@@ -132,7 +132,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    .lineToLinearHeading(new Pose2d(30, -30, Math.toRadians(0)))
+                    //.lineToLinearHeading(new Pose2d(30, -30, Math.toRadians(0)))
                     //.lineToSplineHeading(new Pose2d(40, -30, Math.toRadians(90)))
 
                     .waitSeconds(0.5)
@@ -145,6 +145,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
+                    //.turn(Math.toRadians(90))
                     .lineToLinearHeading(new Pose2d(48, -59, Math.toRadians(90))) // Park Low
                     //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
 
@@ -191,29 +192,30 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(400)
                     )
 
-                    .lineToLinearHeading(new Pose2d(50.5, -39, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(51.5, -39, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0)
                     )
 
-                    .waitSeconds(0.5)
+                    //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(250)
+                            ArmUpDown.setTargetPosition(325)
                     )
-
-                    .lineToSplineHeading(new Pose2d(34, -45, Math.toRadians(90)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
+                    //.lineToSplineHeading(new Pose2d(34, -45, Math.toRadians(90)))
+
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
+                    //.turn(Math.toRadians(90))
                     .lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90)))//Park Low
                     //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90)))//Park Middle
 
@@ -265,9 +267,9 @@ public class RedRightComp extends LinearOpMode {
                             LeftClaw.setPosition(0)
                     )
 
-                    .waitSeconds(0.5)
+                    //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(325)
                     )
 
                     .waitSeconds(0.5)
@@ -275,7 +277,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
-                    .lineToLinearHeading(new Pose2d(34, -33, Math.toRadians(90)))
+                    //.lineToLinearHeading(new Pose2d(34, -33, Math.toRadians(90)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -287,6 +289,7 @@ public class RedRightComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
                     )
 
+                    //.turn(Math.toRadians(90))
                     .lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90))) //Park Low
                     //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
                     .build();

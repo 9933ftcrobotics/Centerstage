@@ -65,9 +65,9 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
         LeftClaw.setPosition(ArmAndClawPosition.LeftClawClosed);
         RightClaw.setPosition(ArmAndClawPosition.RightClawClosed);
-        sleep(1000);
+        sleep(500);
         ArmUpDown.setTargetPosition(100);
-        sleep(1000);
+        sleep(500);
 
         drive.setPoseEstimate(new Pose2d(-38, 61, Math.toRadians(-90)));
         TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(-38, 61, Math.toRadians(-90)))
@@ -103,8 +103,8 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     )*/
 
                     .lineToLinearHeading(new Pose2d(-36, 47, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-34, 50, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-35, 8, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-36, 50, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(-36, 8, Math.toRadians(-90)))
                     .turn(Math.toRadians(90))
                     .lineToSplineHeading(new Pose2d(30, 8, Math.toRadians(0)))
                     .lineToSplineHeading(new Pose2d(44, 21, Math.toRadians(0)))
@@ -127,7 +127,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(350)
                     )
 
                     .lineToLinearHeading(new Pose2d(44, 22, Math.toRadians(0)))
@@ -157,7 +157,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
             drive.setPoseEstimate(new Pose2d(-36, 47, Math.toRadians(-90)));
             TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(-36, 47, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(-32, 40, Math.toRadians(-45)))
+                    .lineToSplineHeading(new Pose2d(-31, 38, Math.toRadians(-45)))
 
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -196,7 +196,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(350)
                     )
 
                     .waitSeconds(0.5)
@@ -237,7 +237,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
                     )*/
 
-                    .waitSeconds(0.5)
+                    //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             RightClaw.setPosition(ArmAndClawPosition.RightClawOpen)
                     )
@@ -255,7 +255,7 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                     .turn(Math.toRadians(90))
                     .lineToSplineHeading(new Pose2d(30, 7, Math.toRadians(0)))
                     //.lineTo(new Vector2d(10, 10))
-                    .lineToSplineHeading(new Pose2d(44, 26, Math.toRadians(0)))
+                    //.lineToSplineHeading(new Pose2d(44, 26, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(430)
@@ -272,12 +272,12 @@ public class PurpleOnlyBlueRight extends LinearOpMode {
                             LeftClaw.setPosition(0)
                     )
 
-                    .waitSeconds(0.5)
+                    //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(350)
                     )
 
-                    .waitSeconds(1)
+                    //.waitSeconds(0.5)
                     .lineToLinearHeading(new Pose2d(44, 26, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
