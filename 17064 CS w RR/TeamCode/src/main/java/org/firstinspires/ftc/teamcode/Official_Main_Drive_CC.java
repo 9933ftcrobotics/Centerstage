@@ -75,7 +75,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     double Robot_Angle, Output_Angle;
     double RightClawPositionClosed = 0.21;
     double LeftClawPositionClosed = 0.27;
-    double LTrigger = 0;
+    double Speed = 0;
     int Count = 0;
     boolean LeftBumperIsPressed, RightBumperIsPressed, LeftClawClamped, RightClawClamped, Climbed;
 
@@ -262,8 +262,8 @@ else
                         Output_Angle = Left_Stick_Angle - Robot_Angle;
                         if(Output_Angle > 180){Output_Angle -= 360;}
                         if(Output_Angle < -180){Output_Angle += 360;}
-                        //LTrigger = (1 - gamepad1.left_trigger);
-                        //LTrigger = Math.max(LTrigger, 0.2);
+                        //Speed = (1 - gamepad1.left_trigger);
+                        //Speed = Math.max(Speed, 0.2);
 
 
                         //this will set a value for the x and y axis of the motor
@@ -302,20 +302,20 @@ else
                     //Send values to the motors
                    /*if(gamepad1.left_trigger > gamepad2.left_trigger)
                    {
-                       LTrigger = (0.75 - gamepad1.left_trigger);
-                       LTrigger = Math.max(LTrigger, 0.2);
+                       Speed = (0.75 - gamepad1.left_trigger);
+                       Speed = Math.max(Speed, 0.2);
                    }
                    else
                    {
-                       LTrigger = (0.75 - gamepad2.left_trigger);
-                       LTrigger = Math.max(LTrigger, 0.2);
+                       Speed = (0.75 - gamepad2.left_trigger);
+                       Speed = Math.max(Speed, 0.2);
                    }*/
 
 
-                    FrontLeft.setPower(LF * LTrigger);
-                    FrontRight.setPower(RF * LTrigger);
-                    RearLeft.setPower(LR * LTrigger);
-                    RearRight.setPower(RR * LTrigger);
+                    FrontLeft.setPower(LF * Speed);
+                    FrontRight.setPower(RF * Speed);
+                    RearLeft.setPower(LR * Speed);
+                    RearRight.setPower(RR * Speed);
 
 
 
@@ -335,13 +335,13 @@ else
 
                     if(gamepad1.left_trigger > gamepad1.left_trigger)
                     {
-                        LTrigger = (0.75 - gamepad1.left_trigger);
-                        LTrigger = Math.max(LTrigger, 0.2);
+                        Speed = (0.75 - gamepad1.left_trigger);
+                        Speed = Math.max(Speed, 0.2);
                     }
                     else
                     {
-                        LTrigger = (0.75 - gamepad2.left_trigger);
-                        LTrigger = Math.max(LTrigger, 0.2);
+                        Speed = (0.75 - gamepad2.left_trigger);
+                        Speed = Math.max(Speed, 0.2);
                     }
                     //Get joystick values
                     Y1 = -gamepad1.left_stick_y * joyScale; //invert so up is positive
@@ -376,10 +376,10 @@ else
 
 
                     //Send values to the motors
-                    FrontLeft.setPower(LF * LTrigger);
-                    FrontRight.setPower(RF * LTrigger);
-                    RearLeft.setPower(LR * LTrigger);
-                    RearRight.setPower(RR * LTrigger);
+                    FrontLeft.setPower(LF * Speed);
+                    FrontRight.setPower(RF * Speed);
+                    RearLeft.setPower(LR * Speed);
+                    RearRight.setPower(RR * Speed);
 
 
 
@@ -402,7 +402,7 @@ else
 
 
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownHigh);
-                    LTrigger = slow;
+                    Speed = slow;
 
 
                     if( ArmUpDown.getTargetPosition() > 300)
@@ -422,7 +422,7 @@ else
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutLow);
 
 
-                    LTrigger = slow;
+                    Speed = slow;
 
 
                 }
@@ -436,18 +436,17 @@ else
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
 
 
-                    LTrigger = slow;
+                    Speed = slow;
 
 
                 } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
-                    LTrigger = slow;
+                    Speed = slow;
                 } else {
 
-                    normal = 0.7;
-                    LTrigger = normal;
+                    Speed = normal;
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
                     if( ArmInOut.getCurrentPosition() < 100)
                     {
@@ -552,40 +551,29 @@ else
                     Climbed = false;
                 }
 
-
-                /*if (gamepad2.y | gamepad1.y) {
-                    slow = 0.7; //Override.
+                if (gamepad1.y | gamepad2.y) {
+                    slow = normal;
                 } else {
-                    slow = 0.3; //Slow speed
-                }*/
+                    slow = 0.3;
+                }
 
-                //Change Max Speed
-                /*if (gamepad1.b && BisPressed == false || gamepad2.b && BisPressed == false) {
-                    normal += 0.1;
+                if ((gamepad1.b | gamepad2.b) && !BisPressed){
                     BisPressed = true;
-                } else if (gamepad1.x && XisPressed == false || gamepad2.x && XisPressed == false) {
-                    normal -= 0.1;
-                    XisPressed = true;
+                    if (normal == 0.7) {
+                        normal = 1;
+                    } else if (normal == 1) {
+                        normal = 0.7;
+                    }
+                    //BisPressed = true;
                 }
 
-                if (!gamepad1.x && !gamepad2.x) {
-                    XisPressed = false;
-                }
-
-                if (!gamepad1.b && !gamepad2.b) {
+                if (!gamepad1.b && !gamepad2.b){
                     BisPressed = false;
                 }
-                //Max is 1 and Low is 0
-                if (normal > 1) {
-                    normal = 1;
-                } else if (normal < 0) {
-                    normal = 0;
-                }
 
-                LTrigger = normal;*/
-
-
-                LTrigger = normal;
+                /*if (!gamepad1.b && !gamepad2.b) {
+                    BisPressed = false;
+                }*/
 
 
 
@@ -596,9 +584,9 @@ else
                 telemetry.addData("Arm Up Down Current",ArmUpDown.getCurrentPosition());
                 telemetry.addData("Power",normal);
                 telemetry.addData("Slow",slow);
-                if (LTrigger == slow) {
-                    telemetry.addLine("LTrigger is Slow");
-                }
+                /*if (Speed == slow) {
+                    telemetry.addLine("Speed is Slow");
+                }*/
                /*telemetry.addLine("");
                telemetry.addData("LeftClaw",LeftClaw.getPosition());
 
