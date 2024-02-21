@@ -224,7 +224,7 @@ public class BlueLeftComp extends LinearOpMode {
 
             drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
             TrajectorySequence MiddleSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
-                    .lineToLinearHeading(new Pose2d(13, 32, Math.toRadians(-90)))
+                    .lineToLinearHeading(new Pose2d(14.5, 32, Math.toRadians(-90)))
 
                     /*.addTemporalMarker(() ->
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround)
@@ -240,7 +240,8 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )*/
 
-                    .back(10)
+                    .lineToSplineHeading(new Pose2d(14.5, 45, Math.toRadians(-90)))
+                    .lineToSplineHeading(new Pose2d(40, 35, Math.toRadians(0)))
                     //.lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
                     //.waitSeconds(0.5)
@@ -253,7 +254,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToSplineHeading(new Pose2d(51, 29, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(50.5, 33, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -265,7 +266,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmUpDown.setTargetPosition(300)
                     )
 
-                    .back(4)
+                    //.back(4)
                     //.lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
                     //.waitSeconds(0.5)
@@ -279,7 +280,7 @@ public class BlueLeftComp extends LinearOpMode {
                     )
 
                     //.lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
+                    .lineToSplineHeading(new Pose2d(50, 59, Math.toRadians(-90)))//Park Corner
                     //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
 
                     .build();

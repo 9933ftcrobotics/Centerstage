@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.apache.commons.math3.analysis.function.Asin;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.robot.Robot;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -19,7 +21,43 @@ import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 import java.lang.Math;
@@ -53,6 +91,26 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     private int count;
     boolean FC = true;
     double SpeedReducer = 0;
+
+    private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
+    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private VisionPortal visionPortal;               // Used to manage the video source.
+    private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
+    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
+
+
+    final double DESIRED_DISTANCE = 6; //12.0; //  this is how close the camera should get to the target (inches)
+
+    //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
+    //  applied to the drive motors to correct the error.
+    //  Drive = Error * Gain    Make these values smaller for smoother control, or larger for a more aggressive response.
+    final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
+    final double TURN_GAIN   =  0.01  ;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
+
+    final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_STRAFE= 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_TURN  = 0.3;
 
 
 
@@ -97,6 +155,14 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
     @Override
     public void runOpMode () {
+
+        boolean targetFound     = false;    // Set to true when an AprilTag target is detected
+        double  driveTwo           = 0;        // Desired forward power/speed (-1 to +1)
+        double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
+        double  turn            = 0;        // Desired turning power/speed (-1 to +1)
+
+        // Initialize the Apriltag Detection process
+        initAprilTag();
 
 
         FrontRight=hardwareMap.dcMotor.get("rightFront");
@@ -200,6 +266,30 @@ public class Official_Main_Drive_CC extends LinearOpMode {
             ClimberLeft.setPower(1);
             ClimberRight.setPower(1);
             while (opModeIsActive()) {
+
+                targetFound = false;
+                desiredTag  = null;
+
+                // Step through the list of detected tags and look for a matching tag
+                List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+                for (AprilTagDetection detection : currentDetections) {
+                    // Look to see if we have size info on this tag.
+                    if (detection.metadata != null) {
+                        //  Check to see if we want to track towards this tag.
+                        if ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID)) {
+                            // Yes, we want to use this tag.
+                            targetFound = true;
+                            desiredTag = detection;
+                            break;  // don't look any further.
+                        } else {
+                            // This tag is in the library, but we do not want to track it right now.
+                            telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                        }
+                    } else {
+                        // This tag is NOT in the library, so we don't have enough information to track to it.
+                        telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+                    }
+                }
 
 
                 if(gamepad1.right_stick_button)
@@ -575,6 +665,54 @@ else
                     BisPressed = false;
                 }*/
 
+                //double a = Math.PI;
+
+                // Output is NaN, because Math.PI gives 3.141 value
+                // greater than 1
+                //System.out.println(Math.asin(a));
+
+                // convert Math.PI to radians
+
+                if (targetFound == true) {
+
+                    //double rot = desiredTag.ftcPose.bearing - desiredTag.ftcPose.yaw;
+                    double rot = Robot_Angle;
+
+                    double radians = Math.toRadians(rot);
+
+                    double x = Math.sin(radians);
+
+                    //telemetry.addData("Old X is", x);
+
+                    double finalx = x * desiredTag.ftcPose.range;
+
+                    double y = Math.cos(radians);
+
+                    double fianaly = y * desiredTag.ftcPose.range;
+
+                    telemetry.addData("Y is", fianaly);
+
+                    //double b = desiredTag.ftcPose.yaw / desiredTag.ftcPose.range;
+
+                   // double range = Math.asin(b);
+
+                    //System.out.println(Math.asin(b));
+
+                    //double c = Math.toDegrees(range);
+
+                    //telemetry.addData("april tag angle", c);
+
+                    telemetry.addData("X is", finalx);
+                    telemetry.addData("Rotation", rot);
+                    telemetry.addData("Found", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
+                    telemetry.addData("Range",  "%5.1f inches", desiredTag.ftcPose.range);
+                    telemetry.addData("Bearing","%3.0f degrees", desiredTag.ftcPose.bearing);
+                    telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
+                }
+
+                //double c = Math.asin(b);
+                //System.out.println(Math.asin(c));
+
 
 
                 telemetry.addData("Arm In Out Target",ArmInOut.getTargetPosition());
@@ -602,7 +740,72 @@ else
 
 
 
+
+
+
             }
+
+        }
+    }
+
+    private void initAprilTag() {
+        // Create the AprilTag processor by using a builder.
+        aprilTag = new AprilTagProcessor.Builder().build();
+
+        // Adjust Image Decimation to trade-off detection-range for detection-rate.
+        // eg: Some typical detection data using a Logitech C920 WebCam
+        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
+        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
+        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
+        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
+        // Note: Decimation can be changed on-the-fly to adapt during a match.
+        aprilTag.setDecimation(2);
+
+        // Create the vision portal by using a builder.
+        if (USE_WEBCAM) {
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .addProcessor(aprilTag)
+                    .build();
+        } else {
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(BuiltinCameraDirection.BACK)
+                    .addProcessor(aprilTag)
+                    .build();
+        }
+    }
+
+    private void    setManualExposure(int exposureMS, int gain) {
+        // Wait for the camera to be open, then use the controls
+
+        if (visionPortal == null) {
+            return;
+        }
+
+        // Make sure camera is streaming before we try to set the exposure controls
+        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+            telemetry.addData("Camera", "Waiting");
+            telemetry.update();
+            while (!isStopRequested() && (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING)) {
+                sleep(20);
+            }
+            telemetry.addData("Camera", "Ready");
+            telemetry.update();
+        }
+
+        // Set camera controls unless we are stopping.
+        if (!isStopRequested())
+        {
+            ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
+            if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                sleep(50);
+            }
+            exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
+            sleep(20);
+            GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
+            gainControl.setGain(gain);
+            sleep(20);
         }
     }
 
