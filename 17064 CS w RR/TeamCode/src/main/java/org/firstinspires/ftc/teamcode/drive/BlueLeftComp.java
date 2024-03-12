@@ -71,7 +71,7 @@ public class BlueLeftComp extends LinearOpMode {
 
         drive.setPoseEstimate(new Pose2d(14.5, 61, Math.toRadians(-90)));
         TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(14.5, 61, Math.toRadians(-90)))
-                .lineToLinearHeading(new Pose2d(11.5, 47, Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(13.5, 47, Math.toRadians(-90)))
                 .build();
         drive.followTrajectorySequence(Start);
 
@@ -280,7 +280,8 @@ public class BlueLeftComp extends LinearOpMode {
                     )
 
                     //.lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(50, 59, Math.toRadians(-90)))//Park Corner
+                    .lineToSplineHeading(new Pose2d(43, 33, Math.toRadians(0))) // Back Away From Backdrop
+                    .lineToSplineHeading(new Pose2d(48, 59, Math.toRadians(-90)))//Park Corner
                     //.lineToSplineHeading(new Pose2d(48, 15, Math.toRadians(-90)))//Park Middle
 
                     .build();

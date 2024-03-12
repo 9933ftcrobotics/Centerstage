@@ -290,7 +290,8 @@ public class RedRightComp extends LinearOpMode {
                     )
 
                     //.turn(Math.toRadians(90))
-                    .lineToLinearHeading(new Pose2d(50, -59, Math.toRadians(90))) //Park Low
+                    .lineToLinearHeading(new Pose2d(43, -33, Math.toRadians(90)))
+                    .lineToLinearHeading(new Pose2d(48, -59, Math.toRadians(90))) //Park Low
                     //.lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90))) //Park Middle
                     .build();
             drive.followTrajectorySequence(MiddleSpike);

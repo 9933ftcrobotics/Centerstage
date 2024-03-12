@@ -16,19 +16,14 @@ public class MeepMeepTesting {
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         //drive.trajectorySequenceBuilder(new Pose2d(14.5, -61, Math.toRadians(90)))
-                        drive.trajectorySequenceBuilder(new Pose2d(-37, 61, Math.toRadians(-90)))
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(-36, -47, Math.toRadians(90)))
-                                /*.lineTo(new Vector2d(-37, -38))
-                                .strafeTo(new Vector2d(-49, -38))
-                                .lineToSplineHeading(new Pose2d(-49, -12, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(-34, -12, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(30, -12, Math.toRadians(90)))
-                                .lineToLinearHeading(new Pose2d(44, -36, Math.toRadians(0)))
-                                .lineTo(new Vector2d(48, -36))
-                                .lineTo(new Vector2d(42, -36))
-                                .lineToLinearHeading(new Pose2d(47, -14, Math.toRadians(90)))*/
-                                .waitSeconds(1)
+                        drive.trajectorySequenceBuilder(new Pose2d(14.5, -61, Math.toRadians(90)))
+                                .lineToSplineHeading(new Pose2d(13.5, -47, Math.toRadians(90)))
+                                .lineToSplineHeading(new Pose2d(14.5, -32, Math.toRadians(90)))
+                                .lineToSplineHeading(new Pose2d(14.5, -45, Math.toRadians(90)))
+                                .lineToSplineHeading(new Pose2d(40, -35, Math.toRadians(0)))
+                                .lineToSplineHeading(new Pose2d(50.5, -33, Math.toRadians(0)))
+                                .lineToSplineHeading(new Pose2d(43, -33, Math.toRadians(0)))
+                                .lineToSplineHeading(new Pose2d(48, -59, Math.toRadians(90)))
                                 .build()
                 );
 

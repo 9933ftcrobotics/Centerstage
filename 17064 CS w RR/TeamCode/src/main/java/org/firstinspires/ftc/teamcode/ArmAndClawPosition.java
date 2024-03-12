@@ -34,7 +34,7 @@ public class ArmAndClawPosition {
 
     public static final int ArmInOutLow = 773;
 
-    public static final int ArmUpDownGround = 90;
+    public static final int ArmUpDownGround = 50;
 
     public static final int ArmInOutGround = 0;
 
