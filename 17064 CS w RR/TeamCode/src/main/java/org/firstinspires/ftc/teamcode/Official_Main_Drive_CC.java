@@ -99,7 +99,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
 
 
-    final double DESIRED_DISTANCE = 6; //12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 5; //12.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -710,6 +710,45 @@ else
                     telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
                 }
 
+                for (AprilTagDetection detection : currentDetections) {
+                    // Look to see if we have size info on this tag.
+                    if (detection.metadata != null) {
+                        //  Check to see if we want to track towards this tag.
+                        if ((DESIRED_TAG_ID < 0) || (detection.id == DESIRED_TAG_ID)) {
+                            // Yes, we want to use this tag.
+                            targetFound = true;
+                            desiredTag = detection;
+                            break;  // don't look any further.
+                        } else {
+                            // This tag is in the library, but we do not want to track it right now.
+                            telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                        }
+                    } else {
+                        // This tag is NOT in the library, so we don't have enough information to track to it.
+                        telemetry.addData("Unknown", "Tag ID %d is not in TagLibrary", detection.id);
+                    }
+                }
+
+                if (gamepad1.a && targetFound) {
+
+                    // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
+                    double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
+                    double  headingError    = -desiredTag.ftcPose.bearing;
+                    double  yawError        = desiredTag.ftcPose.yaw;
+
+                    // Use the speed and turn "gains" to calculate how we want the robot to move.
+                    driveTwo  = Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+                    turn   = Range.clip(headingError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
+                    strafe = Range.clip(yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+
+                    moveRobot(driveTwo, strafe, turn);
+                    sleep(10);
+
+                    telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", driveTwo, strafe, turn);
+                }
+
+
+
                 //double c = Math.asin(b);
                 //System.out.println(Math.asin(c));
 
@@ -719,7 +758,7 @@ else
                 telemetry.addData("Arm In Out Current",ArmInOut.getCurrentPosition());
                 telemetry.addLine("");
                 telemetry.addData("Arm Up Down Target",ArmUpDown.getTargetPosition());
-                telemetry.addData("Arm Up Down Current",ArmUpDown.getCurrentPosition());
+                telemetry.addData("Arm Up Down Current Position",ArmUpDown.getCurrentPosition());
                 telemetry.addData("Power",normal);
                 telemetry.addData("Slow",slow);
                 /*if (Speed == slow) {
@@ -746,6 +785,33 @@ else
             }
 
         }
+    }
+
+
+    public void moveRobot(double x, double y, double yaw) {
+        // Calculate wheel powers.
+        double leftFrontPower    =  x -y -yaw;
+        double rightFrontPower   =  x +y +yaw;
+        double leftBackPower     =  x +y -yaw;
+        double rightBackPower    =  x -y +yaw;
+
+        // Normalize wheel powers to be less than 1.0
+        double max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        max = Math.max(max, Math.abs(leftBackPower));
+        max = Math.max(max, Math.abs(rightBackPower));
+
+        if (max > 1.0) {
+            leftFrontPower /= max;
+            rightFrontPower /= max;
+            leftBackPower /= max;
+            rightBackPower /= max;
+        }
+
+        // Send powers to the wheels.
+        FrontLeft.setPower(leftFrontPower);
+        FrontRight.setPower(rightFrontPower);
+        RearLeft.setPower(leftBackPower);
+        RearRight.setPower(rightBackPower);
     }
 
     private void initAprilTag() {
