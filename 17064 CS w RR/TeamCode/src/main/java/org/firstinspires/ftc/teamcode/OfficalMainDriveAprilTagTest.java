@@ -114,7 +114,7 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
     private Servo LeftClaw;
     private Servo RightClaw;
 
-    final double DESIRED_DISTANCE = 6; //12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 10; //12.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -128,7 +128,7 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
     final double MAX_AUTO_TURN  = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
 
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = 5;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 6;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -242,11 +242,13 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
                 }
 
                 if (gamepad1.dpad_down | gamepad2.dpad_down && !gamepad1.a) {
-                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutGround);
 
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutGround);
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownGround);
                 } else if (!gamepad1.a && !gamepad1.dpad_down && !gamepad2.dpad_down) {
+
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
                 }
 
                 targetFound = false;
@@ -266,6 +268,7 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
                         } else {
                             // This tag is in the library, but we do not want to track it right now.
                             telemetry.addData("Skipping", "Tag ID %d is not desired", detection.id);
+                            targetFound = false;
                         }
                     } else {
                         // This tag is NOT in the library, so we don't have enough information to track to it.
@@ -317,6 +320,7 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
             rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
             */
 
+                //Give telemetry if target is found.
                 if (targetFound) {
                     telemetry.addData("\n>", "HOLD Left-Bumper to Drive to Target\n");
                     telemetry.addData("Found", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
@@ -327,12 +331,14 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
                     telemetry.addData("\n>", "Drive using joysticks to find valid target\n");
                 }
 
-                if (gamepad1.a) {
+
+                //If a is pressed (meaning driver wants to score) and robot can see an april tag, then score
+                if (gamepad1.a && targetFound) {
 
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
-                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
+                    ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutOfficalAprilTag);
 
-                    if (ArmUpDown.getCurrentPosition() > 500 && ArmInOut.getCurrentPosition() > 1200) {
+                    if (ArmUpDown.getCurrentPosition() > 500 && ArmInOut.getCurrentPosition() > 1490) {
 
 
                         // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
@@ -347,10 +353,17 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
                         telemetry.addData("Auto", "Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
 
-                        if (rangeError < 6.2) {
+                        if (rangeError < 9.2) {
                             RightClaw.setPosition(ArmAndClawPosition.RightClawOpen);
                         }
+                    }
+                    moveRobot(drive, strafe, turn);
 
+                    if (RightClaw.getPosition() == ArmAndClawPosition.RightClawOpen) {
+                        ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
+                        if (ArmInOut.getCurrentPosition() < 100) {
+                            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
+                        }
                     }
 
                 } else {
@@ -361,13 +374,17 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
                     rightBackDrive.setPower(rightBackPower);
                 }
 
+                if (gamepad1.a && !targetFound) {
+                    telemetry.addLine("Sorry. I can't see an april tag. Please move your robot so I can see an april tag.");
+                }
+
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
                 telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
                 telemetry.update();
 
-                moveRobot(drive, strafe, turn);
+
                 //sleep(10);
             }
 

@@ -42,5 +42,7 @@ public class ArmAndClawPosition {
 
     public static final int ArmInOutRest = 0;
 
+    public static final int ArmInOutOfficalAprilTag = 1500;
+
 
 }
