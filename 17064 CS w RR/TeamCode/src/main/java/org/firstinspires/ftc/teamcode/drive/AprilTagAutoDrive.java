@@ -39,6 +39,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -91,7 +92,7 @@ import java.util.concurrent.TimeUnit;
 public class AprilTagAutoDrive extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
-    final double DESIRED_DISTANCE = 6; //12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -109,8 +110,12 @@ public class AprilTagAutoDrive extends LinearOpMode
     private DcMotor leftBack    = null;  //  Used to control the left back drive wheel
     private DcMotor rightBack   = null;  //  Used to control the right back drive wheel
 
+
+    private DcMotor ArmInOut;
+    private DcMotor ArmUpDown;
+
     private static final boolean USE_WEBCAM = true;  // Set true to use a webcam, or false for a phone camera
-    private static final int DESIRED_TAG_ID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private static final int DESIRED_TAG_ID = 4;     // Choose the tag you want to approach or set to -1 for ANY tag.
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -133,6 +138,9 @@ public class AprilTagAutoDrive extends LinearOpMode
         leftBack  = hardwareMap.get(DcMotor.class, "leftRear");
         rightBack = hardwareMap.get(DcMotor.class, "rightRear");
 
+        ArmInOut = hardwareMap.get(DcMotor.class, "ArmInOut");
+        ArmUpDown = hardwareMap.get(DcMotor.class, "ArmUpDown");
+
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -140,6 +148,11 @@ public class AprilTagAutoDrive extends LinearOpMode
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
+
+        ArmUpDown.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmUpDown.setTargetPosition(0);
+        ArmUpDown.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        ArmUpDown.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         if (USE_WEBCAM)
             setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
@@ -152,6 +165,8 @@ public class AprilTagAutoDrive extends LinearOpMode
 
         while (opModeIsActive())
         {
+            ArmUpDown.setPower(0.5);
+            ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
             targetFound = false;
             desiredTag  = null;
 
@@ -191,8 +206,15 @@ public class AprilTagAutoDrive extends LinearOpMode
             if (gamepad1.left_bumper && targetFound) {
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
-                double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
-                double  headingError    = -desiredTag.ftcPose.bearing;
+                double Rcam = desiredTag.ftcPose.range;
+                double Bcam = desiredTag.ftcPose.bearing;
+                double Rrob = Math.sqrt(Math.pow(Rcam,2)+Math.pow(8.25,2)-(2*Rcam*8.25*Math.cos(90-(Bcam+23.2))));
+                double Brob = 180-(Bcam + (180-Math.asin((8.25*Math.sin(90-(Bcam+23.2)))/Rrob)));
+
+
+
+                double  rangeError      = (Rrob - DESIRED_DISTANCE);
+                double  headingError    = -Brob;
                 double  yawError        = desiredTag.ftcPose.yaw;
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
