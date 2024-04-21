@@ -328,7 +328,7 @@ public class FeildCentricAprilTagDrive extends LinearOpMode {
 
 
 
-                if(FC == true)
+                if(FC == true && !gamepad1.a)
                 {
                     LF = 0; RF = 0; LR = 0; RR = 0; X1 = 0; Y1 = 0;
 
@@ -435,7 +435,7 @@ else
 
 
                 }
-                if(FC == false)
+                if(FC == false && !gamepad1.a)
                 {
                     LF = 0; RF = 0; LR = 0; RR = 0;
                     imu.getRobotYawPitchRollAngles();
@@ -511,7 +511,7 @@ else
 
 
 
-                if(gamepad1.dpad_up | gamepad2.dpad_up)
+                if(gamepad1.dpad_up && !gamepad1.a | gamepad2.dpad_up && !gamepad1.a)
                 {
 
 
@@ -528,7 +528,7 @@ else
 
 
                 }
-                else if(gamepad1.dpad_left | gamepad2.dpad_left)
+                else if(gamepad1.dpad_left && !gamepad1.a | gamepad2.dpad_left && !gamepad1.a)
                 {
 
 
@@ -540,7 +540,7 @@ else
 
 
                 }
-                else if(gamepad1.dpad_down | gamepad2.dpad_down)
+                else if(gamepad1.dpad_down && !gamepad1.a | gamepad2.dpad_down && !gamepad1.a)
                 {
 
 
@@ -553,12 +553,12 @@ else
                     Speed = slow;
 
 
-                } else if (gamepad1.dpad_right || gamepad2.dpad_right) {
+                } else if (gamepad1.dpad_right && !gamepad1.a || gamepad2.dpad_right && !gamepad1.a) {
                     ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownMid);
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutMid);
 
                     Speed = slow;
-                } else {
+                } else if (!gamepad1.a) {
 
                     Speed = normal;
                     ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest);
