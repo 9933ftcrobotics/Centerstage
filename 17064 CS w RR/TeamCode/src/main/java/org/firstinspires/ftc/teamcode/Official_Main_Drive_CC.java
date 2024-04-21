@@ -59,6 +59,13 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 
 import java.lang.Math;
 
@@ -67,6 +74,8 @@ import java.lang.Math;
 //@Disabled
 public class Official_Main_Drive_CC extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime ();
+
+    IMU imu;
     private DcMotor FrontLeft;
     private DcMotor FrontRight;
     private DcMotor RearRight;
@@ -86,7 +95,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
  private DcMotor LeftMotor;*/
 
 
-    private BNO055IMU imu;
+    //private BNO055IMU imu;
     private boolean temp;
     private int count;
     boolean FC = true;
@@ -155,6 +164,8 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
     @Override
     public void runOpMode () {
+
+        //imu.resetYaw();
 
         boolean targetFound     = false;    // Set to true when an AprilTag target is detected
         double  driveTwo           = 0;        // Desired forward power/speed (-1 to +1)
@@ -227,7 +238,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         BNO055IMU.Parameters imuParameters;
         Orientation angles;
         Acceleration gravity;
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = hardwareMap.get(IMU.class, "imu");
  /*RightMotor = hardwareMap.dcMotor.get("RightMotor");
  LeftMotor = hardwareMap.dcMotor.get("LeftMotor");*/
 
@@ -245,7 +256,13 @@ public class Official_Main_Drive_CC extends LinearOpMode {
         // Disable logging.
         imuParameters.loggingEnabled = false;
         // Initialize IMU.
-        imu.initialize(imuParameters);
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
 
         //RightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -266,6 +283,9 @@ public class Official_Main_Drive_CC extends LinearOpMode {
             ClimberLeft.setPower(1);
             ClimberRight.setPower(1);
             while (opModeIsActive()) {
+
+                YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+                AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
 
                 targetFound = false;
                 desiredTag  = null;
@@ -320,9 +340,9 @@ else
 //}
                     Left_Stick_Y = -gamepad1.left_stick_y;
                     Left_Stick_X = gamepad1.left_stick_x;
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
-                    Robot_Angle = angles.firstAngle * -1;
+                    imu.getRobotYawPitchRollAngles();
+                    imu.getRobotAngularVelocity(AngleUnit.DEGREES);
+                    Robot_Angle = orientation.getYaw(AngleUnit.DEGREES) * -1;
                     if(Left_Stick_Y != 0 || Left_Stick_X != 0)
                     {
                         Left_Stick_Ratio = Left_Stick_X / Left_Stick_Y;
@@ -414,8 +434,8 @@ else
                 if(FC == false)
                 {
                     LF = 0; RF = 0; LR = 0; RR = 0;
-                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                    gravity = imu.getGravity();
+                    imu.getRobotYawPitchRollAngles();
+                    imu.getRobotAngularVelocity(AngleUnit.DEGREES);
 
 
                     X2 = gamepad1.right_stick_x * joyScale;
@@ -676,7 +696,7 @@ else
                 if (targetFound == true) {
 
                     //double rot = desiredTag.ftcPose.bearing - desiredTag.ftcPose.yaw;
-                    double rot = Robot_Angle;
+                    /*double rot = Robot_Angle;
 
                     double radians = Math.toRadians(rot);
 
@@ -707,7 +727,7 @@ else
                     telemetry.addData("Found", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
                     telemetry.addData("Range",  "%5.1f inches", desiredTag.ftcPose.range);
                     telemetry.addData("Bearing","%3.0f degrees", desiredTag.ftcPose.bearing);
-                    telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
+                    telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);*/
                 }
 
                 for (AprilTagDetection detection : currentDetections) {

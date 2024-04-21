@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.apache.commons.math3.analysis.function.Asin;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import com.qualcomm.robotcore.robot.Robot;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -40,6 +44,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -53,6 +60,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
+import com.w8wjb.ftc.AdafruitNeoDriver;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -63,6 +72,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.w8wjb.ftc.AdafruitNeoDriver;
 
 
 import java.lang.Math;
@@ -101,6 +112,12 @@ import java.lang.Math;
 public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
+
+    IMU imu;
+
+    private boolean temp;
+    private int count;
+
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
@@ -113,6 +130,8 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
     private Servo LeftClaw;
     private Servo RightClaw;
+
+    double joyScale = 0.7;  //0.5;
 
     final double DESIRED_DISTANCE = 10; //12.0; //  this is how close the camera should get to the target (inches)
 
@@ -138,8 +157,32 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
     double RightClawPositionClosed = 0.21;
     double LeftClawPositionClosed = 0.27;
 
+    double Left_Stick_Y, Left_Stick_X;
+
+    double Robot_Angle, Output_Angle;
+
+    double RF, LF, RR, LR;
+
+    double X1, Y1, X2, Y2;
+
+    double Left_Stick_Angle, Left_Stick_Ratio, Left_Stick_Magnitude;
+
+    boolean FC = true;
+
+    double Speed = 0;
+    double motorMax = 0.7;  //0.6;
+
+    private int ArmUpDownPos = 0;
+
+    private static final int NUM_PIXELS = 10;
+
+    AdafruitNeoDriver neopixels;
+
     @Override
     public void runOpMode() {
+
+        neopixels = hardwareMap.get(AdafruitNeoDriver.class, "neopixels");
+        neopixels.setNumberOfPixels(NUM_PIXELS);
 
         boolean targetFound = false;    // Set to true when an AprilTag target is detected
         double drive = 0;        // Desired forward power/speed (-1 to +1)
@@ -189,8 +232,39 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
         RightClaw.setDirection(Servo.Direction.REVERSE);
 
+        BNO055IMU.Parameters imuParameters;
+        Orientation angles;
+        Acceleration gravity;
+        imu = hardwareMap.get(IMU.class, "imu");
+ /*RightMotor = hardwareMap.dcMotor.get("RightMotor");
+ LeftMotor = hardwareMap.dcMotor.get("LeftMotor");*/
+
+
+        temp = true;
+        count = 0;
+
+
+        // Create new IMU Parameters object.
+        imuParameters = new BNO055IMU.Parameters();
+        // Use degrees as angle unit.
+        imuParameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        // Express acceleration as m/s^2.
+        imuParameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        // Disable logging.
+        imuParameters.loggingEnabled = false;
+        // Initialize IMU.
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
+
+
 
 
         if (USE_WEBCAM)
@@ -205,9 +279,16 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
         runtime.reset();
 
         if (opModeIsActive()) {
+
+            int color = Color.rgb(74, 230, 255);
+            neopixels.setPixelColor(0, color);
+
             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
+
+                YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+                AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
 
                 if (gamepad1.left_bumper && LeftBumperIsPressed == false) {
                     if (LeftClawClamped) {
@@ -367,11 +448,193 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
                     }
 
                 } else {
-                    // Send calculated power to wheels
-                    leftFrontDrive.setPower(leftFrontPower);
-                    rightFrontDrive.setPower(rightFrontPower);
-                    leftBackDrive.setPower(leftBackPower);
-                    rightBackDrive.setPower(rightBackPower);
+                    if(gamepad1.right_stick_button)
+                    {
+                        //FC = false;
+                    }
+                    if(gamepad1.left_stick_button)
+                    {
+                        FC = true;
+                    }
+
+
+
+
+                    if(FC == true)
+                    {
+                        LF = 0; RF = 0; LR = 0; RR = 0; X1 = 0; Y1 = 0;
+
+
+                        //Setting up Variables
+   /*if(gamepad1.a )
+{
+  motorMax = 0.3;  //0.5;
+}
+else
+{*/
+                        motorMax = 1;
+//}
+                        Left_Stick_Y = -gamepad1.left_stick_y;
+                        Left_Stick_X = gamepad1.left_stick_x;
+                        imu.getRobotYawPitchRollAngles();
+                        imu.getRobotAngularVelocity(AngleUnit.DEGREES);
+                        Robot_Angle = orientation.getYaw(AngleUnit.DEGREES) * -1;
+                        if(Left_Stick_Y != 0 || Left_Stick_X != 0)
+                        {
+                            Left_Stick_Ratio = Left_Stick_X / Left_Stick_Y;
+
+
+
+
+
+
+                            //if left stick y greater than 0
+                            if(Left_Stick_Y > 0){
+     /*it creates this ratio left stick x/ left stick y, then it calulates the angle
+     this is the same thing for the false just add 180 to the angle*/
+                                Left_Stick_Angle = Math.toDegrees(Math.atan(Left_Stick_Ratio));
+                            }
+                            else{
+                                Left_Stick_Angle = Math.toDegrees(Math.atan(Left_Stick_Ratio)) + 180;
+                                if(Left_Stick_Angle > 180){Left_Stick_Angle -= 360;}
+                            }
+                            //it calculates the power in which direction based on the x and y
+                            Left_Stick_Magnitude = Math.sqrt(Math.pow(Left_Stick_Y,2)
+                                    + Math.pow(Left_Stick_X,2));
+
+
+                            //output angle is the way the robot wil go based on the joystick angle - the current robot angle
+                            //the lines after it are just implementing them
+                            Output_Angle = Left_Stick_Angle - Robot_Angle;
+                            if(Output_Angle > 180){Output_Angle -= 360;}
+                            if(Output_Angle < -180){Output_Angle += 360;}
+                            //Speed = (1 - gamepad1.left_trigger);
+                            //Speed = Math.max(Speed, 0.2);
+
+
+                            //this will set a value for the x and y axis of the motor
+                            Y1 = Math.cos(Math.toRadians(Output_Angle)) * Left_Stick_Magnitude;
+                            X1 = Math.sin(Math.toRadians(Output_Angle)) * Left_Stick_Magnitude;
+
+
+                        }
+                        X2 = gamepad1.right_stick_x * joyScale;
+
+
+                        // Forward/back movement
+                        LF += Y1; RF += Y1; LR += Y1; RR += Y1;
+
+
+                        //Side to side movement
+                        LF += X1; RF -= X1; LR -= X1; RR += X1;
+
+
+                        //Rotation Movement
+                        LF += X2; RF -= X2; LR += X2; RR -= X2;
+
+
+                        //Motor Speed
+
+
+                        //Clip motor power values to +/- motorMax
+                        LF = Math.max(-motorMax, Math.min(LF, motorMax));
+                        RF = Math.max(-motorMax, Math.min(RF, motorMax));
+                        LR = Math.max(-motorMax, Math.min(LR, motorMax));
+                        RR = Math.max(-motorMax, Math.min(RR, motorMax));
+
+
+
+
+                        //Send values to the motors
+                   /*if(gamepad1.left_trigger > gamepad2.left_trigger)
+                   {
+                       Speed = (0.75 - gamepad1.left_trigger);
+                       Speed = Math.max(Speed, 0.2);
+                   }
+                   else
+                   {
+                       Speed = (0.75 - gamepad2.left_trigger);
+                       Speed = Math.max(Speed, 0.2);
+                   }*/
+
+
+                        leftFrontDrive.setPower(LF * Speed);
+                        rightFrontDrive.setPower(RF * Speed);
+                        leftBackDrive.setPower(LR * Speed);
+                        rightBackDrive.setPower(RR * Speed);
+
+
+
+
+                    }
+                    if(FC == false)
+                    {
+                        LF = 0; RF = 0; LR = 0; RR = 0;
+                        imu.getRobotYawPitchRollAngles();
+                        imu.getRobotAngularVelocity(AngleUnit.DEGREES);
+
+
+                        X2 = gamepad1.right_stick_x * joyScale;
+
+
+
+
+                        if(gamepad1.left_trigger > gamepad1.left_trigger)
+                        {
+                            Speed = (0.75 - gamepad1.left_trigger);
+                            Speed = Math.max(Speed, 0.2);
+                        }
+                        else
+                        {
+                            Speed = (0.75 - gamepad2.left_trigger);
+                            Speed = Math.max(Speed, 0.2);
+                        }
+                        //Get joystick values
+                        Y1 = -gamepad1.left_stick_y * joyScale; //invert so up is positive
+                        X1 = gamepad1.left_stick_x * joyScale;
+                        Y2 = -gamepad1.right_stick_y * joyScale;  //Y2 is not used at present
+
+
+
+
+                        // Forward/back movement
+                        LF += Y1; RF += Y1; LR += Y1; RR += Y1;
+
+
+                        //Side to side movement
+                        LF += X1; RF -= X1; LR -= X1; RR += X1;
+
+
+                        //Rotation Movement
+                        LF += X2; RF -= X2; LR += X2; RR -= X2;
+
+
+                        motorMax = 1;
+
+
+                        //Clip motor power values to +/- motorMax
+                        LF = Math.max(-motorMax, Math.min(LF, motorMax));
+                        RF = Math.max(-motorMax, Math.min(RF, motorMax));
+                        LR = Math.max(-motorMax, Math.min(LR, motorMax));
+                        RR = Math.max(-motorMax, Math.min(RR, motorMax));
+
+
+
+
+                        //Send values to the motors
+                        leftFrontDrive.setPower(LF * Speed);
+                        rightFrontDrive.setPower(RF * Speed);
+                        leftBackDrive.setPower(LR * Speed);
+                        rightBackDrive.setPower(RR * Speed);
+
+
+
+
+
+
+
+
+                    }
                 }
 
                 if (gamepad1.a && !targetFound) {
