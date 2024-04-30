@@ -207,11 +207,34 @@ public class AprilTagAutoDrive extends LinearOpMode
 
                 // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
                 double Rcam = desiredTag.ftcPose.range;
-                double Bcam = desiredTag.ftcPose.bearing;
-                double Rrob = Math.sqrt(Math.pow(Rcam,2)+Math.pow(8.25,2)-(2*Rcam*8.25*Math.cos(90-(Bcam+23.2))));
-                double Brob = 180-(Bcam + (180-Math.asin((8.25*Math.sin(90-(Bcam+23.2)))/Rrob)));
+                double Bcam = Math.toRadians(-desiredTag.ftcPose.bearing);
+                double HorizontalOffset = Math.sin(Bcam)* Rcam;
+                telemetry.addData("Given","Rcam %5.2f, Bcam %5.2f", Rcam, Bcam);
+                Bcam = Math.abs(Bcam);
 
+                double Rrob, Brob, Radd, x;
 
+                if(HorizontalOffset > 7.5){
+                    Radd = 7.5/Math.cos(Bcam);
+                    x = (7.5/Math.tan(Bcam)) - 3.25;
+                    Rrob = Math.sqrt(Math.pow(Rcam-Radd,2)+Math.pow(x,2)-(2*(Rcam-Radd)*x*Math.cos(Math.PI-Bcam)));
+                    Brob = Math.toDegrees(Math.asin((Math.sin(Math.PI-Bcam)*(Rcam-Radd))/Rrob));
+                } else if (HorizontalOffset < 0) {
+                    Radd = 7.5/Math.sin(Bcam);
+                    x = 7.5/Math.tan(Bcam);
+                    Rrob = Math.sqrt(Math.pow(Rcam+Radd,2)+Math.pow(x,2)- (2*(Rcam+Radd)*x*Math.cos(Bcam)));
+                    Brob = Math.toDegrees(Math.PI - Math.asin(((Rcam+Radd)*Math.sin(Bcam))/Rrob));
+                }
+                else {
+                    Radd = 0;
+                    x = 0;
+                    Rrob = Math.sqrt(Math.pow(Rcam,2)+Math.pow(8.25,2)-(2*Rcam*8.25*Math.cos(90-(Bcam+23.2))));
+                    Brob = Math.toDegrees(Math.PI -(Bcam + (Math.PI -Math.asin((8.25*Math.sin((Math.PI /2)-(Bcam+23.2)))/Rrob))));
+                }
+                telemetry.addData("Given","Rcam %5.2f, Bcam %5.2f", Rcam, Bcam);
+
+                telemetry.addData("Offset","Horizontal %5.2f, Radd %5.2f, x %5.2f ", HorizontalOffset, Radd, x);
+                telemetry.addData("Calculated","Rrob %5.2f, Brob %5.2f", Rrob, Brob);
 
                 double  rangeError      = (Rrob - DESIRED_DISTANCE);
                 double  headingError    = -Brob;
