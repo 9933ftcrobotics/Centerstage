@@ -60,7 +60,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-import com.w8wjb.ftc.AdafruitNeoDriver;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -73,11 +72,9 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.w8wjb.ftc.AdafruitNeoDriver;
-
+//import com.w8wjb.ftc.AdafruitNeoDriver;
 
 import java.lang.Math;
-
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -176,13 +173,8 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
     private static final int NUM_PIXELS = 10;
 
-    AdafruitNeoDriver neopixels;
-
     @Override
     public void runOpMode() {
-
-        neopixels = hardwareMap.get(AdafruitNeoDriver.class, "neopixels");
-        neopixels.setNumberOfPixels(NUM_PIXELS);
 
         boolean targetFound = false;    // Set to true when an AprilTag target is detected
         double drive = 0;        // Desired forward power/speed (-1 to +1)
@@ -279,9 +271,6 @@ public class OfficalMainDriveAprilTagTest extends LinearOpMode {
         runtime.reset();
 
         if (opModeIsActive()) {
-
-            int color = Color.rgb(74, 230, 255);
-            neopixels.setPixelColor(0, color);
 
             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest);
             // run until the end of the match (driver presses STOP)

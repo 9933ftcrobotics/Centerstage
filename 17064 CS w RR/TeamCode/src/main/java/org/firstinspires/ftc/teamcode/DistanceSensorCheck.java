@@ -15,7 +15,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 
 @TeleOp(name = "DistanceSensorCheck", group = "")
-@Disabled
+
 @Config
 public class DistanceSensorCheck extends LinearOpMode {
     String Spike;
