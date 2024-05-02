@@ -16,14 +16,14 @@ public class MeepMeepTesting {
                 .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         //drive.trajectorySequenceBuilder(new Pose2d(14.5, -61, Math.toRadians(90)))
-                        drive.trajectorySequenceBuilder(new Pose2d(14.5, -61, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(13.5, -47, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(14.5, -32, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(14.5, -45, Math.toRadians(90)))
-                                .lineToSplineHeading(new Pose2d(40, -35, Math.toRadians(0)))
-                                .lineToSplineHeading(new Pose2d(50.5, -33, Math.toRadians(0)))
-                                .lineToSplineHeading(new Pose2d(43, -33, Math.toRadians(0)))
-                                .lineToSplineHeading(new Pose2d(48, -59, Math.toRadians(90)))
+                        drive.trajectorySequenceBuilder(new Pose2d(14.5, 47, Math.toRadians(-90)))
+                                .lineToSplineHeading(new Pose2d(10, 39, Math.toRadians(-135)))
+                                .lineToSplineHeading(new Pose2d(20, 39, Math.toRadians(-135)))
+                                .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(49, 28, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(45, 28, Math.toRadians(0)))
+                                .lineToSplineHeading(new Pose2d(42, 58, Math.toRadians(-90)))
+                                .lineToSplineHeading(new Pose2d(50, 58, Math.toRadians(-90)))//Park Corner
                                 .build()
                 );
 

@@ -155,7 +155,7 @@ public class BlueLeftComp extends LinearOpMode {
             drive.setPoseEstimate(new Pose2d(13.5, 47, Math.toRadians(-90)));
             TrajectorySequence RightSpike = drive.trajectorySequenceBuilder(new Pose2d(13.5, 47, Math.toRadians(-90)))
 
-                    .lineToSplineHeading(new Pose2d(12, 39, Math.toRadians(-135)))
+                    .lineToSplineHeading(new Pose2d(10, 39, Math.toRadians(-135)))
                     //.forward(3)
 
                     .addTemporalMarker(() ->
@@ -172,8 +172,8 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmUpDown.setTargetPosition(ArmAndClawPosition.ArmUpDownRest)
                     )
 
-                    .back(12)
-                    //.lineToSplineHeading(new Pose2d(40, 20, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(20, 39, Math.toRadians(-135)))
+                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(0))) //To backdrop
 
                     //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -185,7 +185,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToLinearHeading(new Pose2d(50.5, 22, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(49, 28, Math.toRadians(0))) // On backdrop
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0)
@@ -196,8 +196,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmUpDown.setTargetPosition(275)
                     )
 
-                    .back(3)
-                    //.lineToSplineHeading(new Pose2d(42, 31, Math.toRadians(-90)))
+                    .lineToLinearHeading(new Pose2d(45, 28, Math.toRadians(0))) //Away from backdrop
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
