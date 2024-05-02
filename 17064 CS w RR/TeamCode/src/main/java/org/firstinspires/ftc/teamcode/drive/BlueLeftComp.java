@@ -122,7 +122,7 @@ public class BlueLeftComp extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(325)
                     )
 
                     .waitSeconds(0.5)
@@ -193,7 +193,7 @@ public class BlueLeftComp extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(275)
+                            ArmUpDown.setTargetPosition(325)
                     )
 
                     .lineToLinearHeading(new Pose2d(45, 28, Math.toRadians(0))) //Away from backdrop
@@ -262,7 +262,7 @@ public class BlueLeftComp extends LinearOpMode {
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
-                            ArmUpDown.setTargetPosition(300)
+                            ArmUpDown.setTargetPosition(325)
                     )
 
                     //.back(4)
