@@ -114,7 +114,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToLinearHeading(new Pose2d(50.5, 35, Math.toRadians(0)))
+                    .lineToLinearHeading(new Pose2d(50.5, 33, Math.toRadians(0)))
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0)
@@ -173,7 +173,7 @@ public class BlueLeftComp extends LinearOpMode {
                     )
 
                     .lineToSplineHeading(new Pose2d(20, 39, Math.toRadians(-135)))
-                    .lineToLinearHeading(new Pose2d(40, 28, Math.toRadians(0))) //To backdrop
+                    .lineToLinearHeading(new Pose2d(40, 26, Math.toRadians(0))) //To backdrop
 
                     //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -185,7 +185,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToLinearHeading(new Pose2d(49, 28, Math.toRadians(0))) // On backdrop
+                    .lineToLinearHeading(new Pose2d(49, 26, Math.toRadians(0))) // On backdrop
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0)
@@ -240,7 +240,7 @@ public class BlueLeftComp extends LinearOpMode {
                     )*/
 
                     .lineToSplineHeading(new Pose2d(14.5, 45, Math.toRadians(-90)))
-                    .lineToSplineHeading(new Pose2d(40, 35, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(35, 35, Math.toRadians(0)))
                     //.lineToSplineHeading(new Pose2d(42, 29, Math.toRadians(0)))
 
                     //.waitSeconds(0.5)
@@ -253,7 +253,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToSplineHeading(new Pose2d(50.5, 33, Math.toRadians(0)))
+                    .lineToSplineHeading(new Pose2d(49, 33, Math.toRadians(0)))
 
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->

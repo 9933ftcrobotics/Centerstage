@@ -71,7 +71,7 @@ import java.lang.Math;
 
 
 @TeleOp(name = "OfficialMainDriveFeildCentricAprilTag", group = "")
-//@Disabled
+@Disabled
 public class FeildCentricAprilTagDrive extends LinearOpMode {
     //private ElapsedTime runtime = new ElapsedTime ();
 

@@ -105,7 +105,7 @@ import java.lang.Math;
  */
 
 @TeleOp(name="OfficalMainDriveAprilTagTest", group="Linear OpMode")
-//@Disabled
+@Disabled
 public class OfficalMainDriveAprilTagTest extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.

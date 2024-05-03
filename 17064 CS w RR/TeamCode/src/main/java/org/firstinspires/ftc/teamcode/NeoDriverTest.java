@@ -85,7 +85,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
-import com.w8wjb.ftc.AdafruitNeoDriver;
+//import com.w8wjb.ftc.AdafruitNeoDriver;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -97,8 +97,6 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import com.w8wjb.ftc.AdafruitNeoDriver;
 
 
 import java.lang.Math;
@@ -133,7 +131,7 @@ import java.lang.Math;
  */
 
 @TeleOp(name="NeoDriverTest", group="Linear OpMode")
-//@Disabled
+@Disabled
 public class NeoDriverTest extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -146,13 +144,13 @@ public class NeoDriverTest extends LinearOpMode {
 
     private static final int NUM_PIXELS = 10;
 
-    AdafruitNeoDriver neopixels;
+    //AdafruitNeoDriver neopixels;
 
     @Override
     public void runOpMode() {
 
-        neopixels = hardwareMap.get(AdafruitNeoDriver.class, "neopixels");
-        neopixels.setNumberOfPixels(NUM_PIXELS);
+        //neopixels = hardwareMap.get(AdafruitNeoDriver.class, "neopixels");
+        //neopixels.setNumberOfPixels(NUM_PIXELS);
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
@@ -182,7 +180,7 @@ public class NeoDriverTest extends LinearOpMode {
             while (opModeIsActive()) {
 
                 int color = Color.rgb(74, 230, 255);
-                neopixels.setPixelColor(0, color);
+                //neopixels.setPixelColor(0, color);
 
 
             }
