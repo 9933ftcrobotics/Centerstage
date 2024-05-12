@@ -515,7 +515,7 @@ else
                     Speed = slow;
 
 
-                    if( ArmUpDown.getTargetPosition() > 300)
+                    if( ArmUpDown.getTargetPosition() > 500)
                     {
 
 

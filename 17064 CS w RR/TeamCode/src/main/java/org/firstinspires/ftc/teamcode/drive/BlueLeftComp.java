@@ -173,7 +173,7 @@ public class BlueLeftComp extends LinearOpMode {
                     )
 
                     .lineToSplineHeading(new Pose2d(20, 39, Math.toRadians(-135)))
-                    .lineToLinearHeading(new Pose2d(40, 26, Math.toRadians(0))) //To backdrop
+                    .lineToLinearHeading(new Pose2d(40, 24, Math.toRadians(0))) //To backdrop
 
                     //.waitSeconds(0.5)
                     .addTemporalMarker(() ->
@@ -185,7 +185,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmInOut.setTargetPosition(500)
                     )
 
-                    .lineToLinearHeading(new Pose2d(49, 26, Math.toRadians(0))) // On backdrop
+                    .lineToLinearHeading(new Pose2d(49, 24, Math.toRadians(0))) // On backdrop
 
                     .addTemporalMarker(() ->
                             LeftClaw.setPosition(0)
@@ -196,7 +196,7 @@ public class BlueLeftComp extends LinearOpMode {
                             ArmUpDown.setTargetPosition(325)
                     )
 
-                    .lineToLinearHeading(new Pose2d(45, 28, Math.toRadians(0))) //Away from backdrop
+                    .lineToLinearHeading(new Pose2d(45, 24, Math.toRadians(0))) //Away from backdrop
                     .waitSeconds(0.5)
                     .addTemporalMarker(() ->
                             ArmInOut.setTargetPosition(ArmAndClawPosition.ArmInOutRest)
