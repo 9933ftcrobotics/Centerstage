@@ -23,7 +23,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -37,6 +36,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ArmAndClawPosition;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -66,8 +66,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+
 
 import java.lang.Math;
+
+import org.firstinspires.ftc.teamcode.HardWearMap;
 
 
 @TeleOp(name = "Official_Main_Drive_CC", group = "")
@@ -122,7 +128,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
     final double MAX_AUTO_TURN  = 0.3;
 
 
-
+    int distance = 20;
 
     //declare motor speed variables
     double RF, LF, RR, LR;
@@ -273,6 +279,7 @@ public class Official_Main_Drive_CC extends LinearOpMode {
 
 
 
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();
         if (opModeIsActive()) {
@@ -500,6 +507,24 @@ else
 
                 }
 
+                if (gamepad1.x) {
+                    drive.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(-0)));
+                    TrajectorySequence Start = drive.trajectorySequenceBuilder(new Pose2d(0, 0, Math.toRadians(-0)))
+                            .lineToLinearHeading(new Pose2d(0, distance, Math.toRadians(-0)))
+                            .lineToLinearHeading(new Pose2d(distance, distance, Math.toRadians(-0)))
+                            .build();
+                    drive.followTrajectorySequence(Start);
+                }
+
+                if (gamepad1.b) {
+                    distance = 10;
+                }
+                if (gamepad1.y) {
+                    distance = 20;
+                }
+
+                telemetry.addData("Distance For Roadrunner", distance);
+
 
 
 
@@ -661,13 +686,13 @@ else
                     Climbed = false;
                 }
 
-                if (gamepad1.y | gamepad2.y) {
+                /*if (gamepad1.y | gamepad2.y) {
                     slow = normal;
                 } else {
                     slow = 0.3;
-                }
+                }*/
 
-                if ((gamepad1.b | gamepad2.b) && !BisPressed){
+                /*if ((gamepad1.b | gamepad2.b) && !BisPressed){
                     BisPressed = true;
                     if (normal == 0.7) {
                         normal = 1;
@@ -679,7 +704,7 @@ else
 
                 if (!gamepad1.b && !gamepad2.b){
                     BisPressed = false;
-                }
+                }*/
 
                 /*if (!gamepad1.b && !gamepad2.b) {
                     BisPressed = false;

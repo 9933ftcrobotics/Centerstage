@@ -41,6 +41,8 @@ public class ShooterRobot extends LinearOpMode {
 
     private Servo stopper;
 
+    private TouchSensor touch;
+
     int MotorSpeed = 2900;
     int start = 0;
     boolean YisPressed = false;
@@ -91,8 +93,10 @@ public class ShooterRobot extends LinearOpMode {
         motorTwo = hardwareMap.get(DcMotorEx.class, "rightmotor");
         color = hardwareMap.get(ColorSensor.class, "color");
 
+        touch = hardwareMap.get(TouchSensor.class, "touch");
+
         motorOne.setDirection(DcMotor.Direction.REVERSE);
-        //belt.setDirection(DcMotor.Direction.REVERSE);
+        belt.setDirection(DcMotor.Direction.REVERSE);
 
 
         FrontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -146,10 +150,10 @@ public class ShooterRobot extends LinearOpMode {
 //motorTwo.setTargetPosition(300);
 // Switch to RUN_TO_POSITION mode
 //motorTwo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorOne.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorTwo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         if (opModeIsActive()) {
 
-            stopper.setPosition(0);
+            stopper.setPosition(0.5);
 
             while (opModeIsActive()) {
 
@@ -370,13 +374,21 @@ public class ShooterRobot extends LinearOpMode {
 
                 //belt.setPower(gamepad1.right_stick_y);
 
-                if (gamepad1.right_trigger > 0.01) {
-                    belt.setDirection(DcMotor.Direction.FORWARD);
-                    belt.setPower(gamepad1.right_trigger);
-                }
-                if (gamepad1.left_trigger > 0.01) {
+                /*if (touch.isPressed()) {
+                    belt.setPower(1);
+                    //stopper.setPosition(0.5);
+                } else if (!touch.isPressed()) {
+                    belt.setPower(0);
+                }*/
+
+                if (gamepad1.right_trigger > 0.1 || touch.isPressed()) {
                     belt.setDirection(DcMotor.Direction.REVERSE);
+                    belt.setPower(gamepad1.right_trigger);
+                } else if (gamepad1.left_trigger > 0.1) {
+                    belt.setDirection(DcMotor.Direction.FORWARD);
                     belt.setPower(gamepad1.left_trigger);
+                } else if (gamepad1.right_trigger < 0.1 && gamepad1.left_trigger < 0.1 || !touch.isPressed()) {
+                    belt.setPower(0);
                 }
 
                 if(start == 1){
